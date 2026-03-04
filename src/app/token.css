@@ -1,0 +1,44 @@
+:root {
+  /* Spacing Token (4px 베이스) */
+  --sp-1: 4px;
+  --sp-2: 8px;
+  --sp-3: 12px;
+  --sp-4: 16px;
+  --sp-5: 20px;
+  --sp-6: 24px;
+  --sp-8: 32px;
+  --sp-10: 40px;
+  --sp-12: 48px;
+  --sp-16: 64px;
+
+  /* GNB */
+  --gnb-dt: 240px; /* desktop */
+  --gnb-tb: 64px; /* tablet */
+  --gnb-m: 56px; /* mobile */
+  --ios-safe-area: 34px;
+
+  /* Layout */
+  --max-w-dt: 1440px; /* desktop */
+  --max-w-tb: 768px; /* tablet */
+  --max-w-m: 375px; /* mobile */
+
+  --ct-w-dt: 1136px; /* desktop */
+  --ct-w-tb: 704px; /* tablet */
+  --ct-w-m: 335px; /* mobile */
+
+  --mg-dt: 32px; /* desktop */
+  --mg-tb: 32px; /* tablet */
+  --mg-m: 20px; /* mobile */
+
+  --gt-dt: 22px; /* desktop */
+  --gt-tb: 24px; /* tablet */
+  --gt-m: 16px; /* mobile */
+
+  --col-dt: 12; /* desktop */
+  --col-tb: 8; /* tablet */
+  --col-m: 4; /* mobile */
+
+  /* Border Radius */
+  --br-sm: 4px;
+  --br-md: 8px;
+}

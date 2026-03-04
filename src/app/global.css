@@ -1,0 +1,48 @@
+@import "./token.css";
+
+/* Desktop (Primary 1024px~) */
+.layout {
+  display: grid;
+  grid-template-columns: var(--gnb-dt) 1fr;
+  max-width: var(--max-w-dt);
+  margin: 0 auto;
+}
+
+.content-area {
+  display: grid;
+  grid-template-columns: repeat(var(--col-dt), 1fr);
+  gap: var(--gt-dt);
+  padding: 0 var(--mg-dt);
+  max-width: var(--ct-w-dt);
+}
+
+/* Tablet (768px ~ 1023px) */
+@media (max-width: 1023px) {
+  .layout {
+    grid-template-columns: 1fr;
+    padding-top: var(--gnb-tb);
+  }
+
+  .content-area {
+    grid-template-columns: repeat(var(--col-tb), 1fr);
+    gap: var(--gt-tb);
+    padding: 0 var(--mg-tb);
+    max-width: var(--ct-w-tb);
+  }
+}
+
+/* Mobile (~767px) */
+@media (max-width: 767px) {
+  .layout {
+    grid-template-columns: 1fr;
+    padding-top: 0;
+    padding-bottom: calc(var(--gnb-m) + var(--ios-safe-area));
+  }
+
+  .content-area {
+    grid-template-columns: repeat(var(--col-m), 1fr);
+    gap: var(--gt-m);
+    padding: 0 var(--mg-m);
+    max-width: var(--ct-w-m);
+  }
+}
