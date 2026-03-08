@@ -20,22 +20,29 @@ export default defineConfig([
       globals: globals.browser,
     },
     rules: {
+      /* FSD 단방향 의존성을 위한 규칙 */
       "import/no-restricted-paths": [
         "error",
         {
           zones: [
             /* pages */
             { target: "./src/pages", from: "./src/app" },
+            /* widgets */
+            { target: "./src/widgets", from: "./src/app" },
+            { target: "./src/widgets", from: "./src/pages" },
             /* features */
             { target: "./src/features", from: "./src/app" },
             { target: "./src/features", from: "./src/widgets" },
+            { target: "./src/features", from: "./src/pages" },
             /* entities */
             { target: "./src/entities", from: "./src/app" },
             { target: "./src/entities", from: "./src/widgets" },
+            { target: "./src/entities", from: "./src/pages" },
             { target: "./src/entities", from: "./src/features" },
             /* shared */
             { target: "./src/shared", from: "./src/app" },
             { target: "./src/shared", from: "./src/widgets" },
+            { target: "./src/shared", from: "./src/pages" },
             { target: "./src/shared", from: "./src/features" },
             { target: "./src/shared", from: "./src/entities" },
           ],
