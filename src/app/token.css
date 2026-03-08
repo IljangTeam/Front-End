@@ -41,4 +41,9 @@
   /* Border Radius */
   --br-sm: 4px;
   --br-md: 8px;
+
+  /* Colors */
+  --white: #ffffff; /* 임시 설정*/
+  --gray: #f4f4f5 /* 임시 설정*/;
+  --black: #000 /* 임시 설정*/;
 }
