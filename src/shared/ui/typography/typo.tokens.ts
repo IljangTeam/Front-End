@@ -153,7 +153,7 @@ const computeToken = (raw: TypoTokenRaw): TypoComputed => ({
   size: raw.size,
   weight: toWeightNumber(raw.weight),
   lineHeight: toUnitlessLH(raw.lineHeight, raw.size),
-  ...(raw.letterSpacing && {
+  ...(raw.letterSpacing !== undefined && {
     letterSpacing: toEmLS(raw.letterSpacing, raw.size),
   }),
 });
