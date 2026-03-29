@@ -1,6 +1,5 @@
 import type { Config } from "tailwindcss";
-import { tailwindTypography } from "./src/shared/ui/typography";
-
+import { tailwindTypo } from "./src/shared/ui/typography";
 const config: Config = {
   content: [
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
@@ -12,8 +11,8 @@ const config: Config = {
   ],
   theme: {
     extend: {
-      fontFamily: tailwindTypography.fontFamily,
-      fontSize: tailwindTypography.fontSize,
+      fontFamily: tailwindTypo.fontFamily,
+      fontSize: tailwindTypo.fontSize,
     },
   },
   plugins: [],
