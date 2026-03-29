@@ -58,7 +58,7 @@ type TypoTokenRaw = {
 
 const TYPO_TOKENS = {
   /* ===== Display ===== */
-  display: {
+  "display": {
     size: 40,
     weight: "extrabold",
     lineHeight: 48,
@@ -96,7 +96,7 @@ const TYPO_TOKENS = {
     weight: "regular",
     lineHeight: 26.4,
   },
-  body: {
+  "body": {
     size: 14,
     weight: "regular",
     lineHeight: 23.1,
@@ -113,14 +113,14 @@ const TYPO_TOKENS = {
     weight: "semibold",
     lineHeight: 19.6,
   },
-  label: {
+  "label": {
     size: 12,
     weight: "semibold",
     lineHeight: 16.8,
   },
 
   /* ===== Caption ===== */
-  caption: {
+  "caption": {
     size: 11,
     weight: "regular",
     lineHeight: 16.5,
