@@ -122,3 +122,8 @@ body {
     Malgun Gothic,
     sans-serif;
 }
+
+input,
+textarea {
+  caret-color: var(--color-text-accent) !important;
+}
