@@ -72,6 +72,7 @@ export const Heading3 = T["heading-3"];
 export const Heading4 = T["heading-4"];
 export const BodyLarge = T["body-large"];
 export const Body = T["body"];
+export const BodyBold = T["body-bold"];
 export const BodySmall = T["body-small"];
 export const LabelLarge = T["label-large"];
 export const Label = T["label"];
