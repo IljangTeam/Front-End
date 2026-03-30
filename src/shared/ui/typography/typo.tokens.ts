@@ -106,6 +106,11 @@ const TYPO_TOKENS = {
     weight: "regular",
     lineHeight: 20.8,
   },
+  "body-bold": {
+    size: 14,
+    weight: "bold",
+    lineHeight: 23.1,
+  },
 
   /* ===== Labels ===== */
   "label-large": {
