@@ -11,13 +11,9 @@ import {
   AuthSubmitButton as SubmitButton,
 } from "./LoginComponents";
 
-type LoginFormData = {
-  email: string;
-  password: string;
-};
-
 export default function LoginView() {
   const {
+    form,
     updateEmail,
     updatePassword,
     handleSubmit,
@@ -36,12 +32,14 @@ export default function LoginView() {
           title="이메일"
           placeholder="example@email.com"
           onChange={(e) => updateEmail(e.target.value)}
+          value={form.email === "" ? undefined : form.email}
         />
         <LoginInput
           title="비밀번호"
           placeholder="비밀번호 입력"
           type={showPassword ? "text" : "password"}
           onChange={(e) => updatePassword(e.target.value)}
+          value={form.password === "" ? undefined : form.password}
           suffix={
             <button type="button" onClick={togglePasswordVisibility}>
               {showPassword ? (
