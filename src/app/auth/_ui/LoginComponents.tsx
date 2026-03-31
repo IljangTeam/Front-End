@@ -96,7 +96,7 @@ const Typo = styled.span<{ state: boolean }>`
 
 const OrBar = () => {
   return (
-    <div className="flex flex-row items-center justify-between min-w-full white-space-nowrap gap-[12px] text-[var(--palette-gray-300)]">
+    <div className="flex flex-row items-center justify-between min-w-full whitespace-nowrap gap-[12px] text-[var(--palette-gray-300)]">
       <BarLine />
       <Label>또는</Label>
       <BarLine />
