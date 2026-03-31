@@ -8,7 +8,7 @@ import { typo } from "@/shared/ui/typography";
 /*                Auth Input Component             */
 /*=============================================== */
 
-type AuthInputComponenetProps = {
+type AuthInputComponentProps = {
   title: string;
   placeholder: string;
   type?: "email" | "password" | "name" | "text";
@@ -16,13 +16,13 @@ type AuthInputComponenetProps = {
   suffix?: React.ReactNode;
 };
 
-export function AuthInputComponenet({
+export function AuthInputComponent({
   title,
   placeholder,
   type = "email",
   onChange,
   suffix,
-}: AuthInputComponenetProps) {
+}: AuthInputComponentProps) {
   return (
     <div className="flex flex-col justify-between items-left min-w-full gap-[4px]">
       <BodyBold>{title}</BodyBold>

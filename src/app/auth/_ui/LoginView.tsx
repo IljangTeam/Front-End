@@ -7,7 +7,7 @@ import { useLoginFormData } from "../_model/useLoginFormData";
 
 // ===== ui components =====
 import {
-  AuthInputComponenet as LoginInput,
+  AuthInputComponent as LoginInput,
   AuthSubmitButton as SubmitButton,
 } from "./LoginComponents";
 
