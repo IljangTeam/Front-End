@@ -18,7 +18,6 @@ export function useSignupFormData() {
     passwordConfirm: "",
   });
   const [showPassword, setShowPassword] = useState(false);
-  const [showPasswordConfirm, setShowPasswordConfirm] = useState(false);
 
   const updateName = (value: string) => {
     setForm((prev) => ({ ...prev, name: value }));
@@ -38,10 +37,6 @@ export function useSignupFormData() {
 
   const togglePasswordVisibility = () => {
     setShowPassword((prev) => !prev);
-  };
-
-  const togglePasswordConfirmVisibility = () => {
-    setShowPasswordConfirm((prev) => !prev);
   };
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
@@ -78,8 +73,6 @@ export function useSignupFormData() {
     isValid,
     isPasswordMatch,
     showPassword,
-    showPasswordConfirm,
     togglePasswordVisibility,
-    togglePasswordConfirmVisibility,
   };
 }

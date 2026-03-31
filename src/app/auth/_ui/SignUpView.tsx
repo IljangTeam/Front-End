@@ -6,7 +6,7 @@ import { useState } from "react";
 import { useSignupFormData } from "../_model/useSignupFormData";
 // ===== ui components =====
 import {
-  AuthInputComponenet as LoginInput,
+  AuthInputComponent as LoginInput,
   AuthSubmitButton as SubmitButton,
 } from "./LoginComponents";
 
@@ -18,15 +18,14 @@ type SignupFormData = {
 
 export default function SignupView() {
   const {
+    form,
     updateName,
     updateEmail,
     updatePassword,
     updatePasswordConfirm,
     handleSubmit,
     showPassword,
-    showPasswordConfirm,
     togglePasswordVisibility,
-    togglePasswordConfirmVisibility,
   } = useSignupFormData();
 
   return (
@@ -40,18 +39,22 @@ export default function SignupView() {
           <LoginInput
             title="이름"
             placeholder="홍길동"
-            type="name"
+            type="text"
             onChange={(e) => updateName(e.target.value)}
+            value={form.name === "" ? undefined : form.name}
           />
           <LoginInput
             title="이메일"
             placeholder="example@email.com"
             onChange={(e) => updateEmail(e.target.value)}
+            value={form.email === "" ? undefined : form.email}
           />
           <LoginInput
             title="비밀번호"
             placeholder="비밀번호 입력"
+            type={showPassword ? "text" : "password"}
             onChange={(e) => updatePassword(e.target.value)}
+            value={form.password === "" ? undefined : form.password}
             suffix={
               <button type="button" onClick={togglePasswordVisibility}>
                 {showPassword ? (
