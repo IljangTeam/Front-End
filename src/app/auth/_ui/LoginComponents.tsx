@@ -14,6 +14,7 @@ type AuthInputComponentProps = {
   type?: "email" | "password" | "name" | "text";
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   suffix?: React.ReactNode;
+  value?: string;
 };
 
 export function AuthInputComponent({
@@ -22,6 +23,7 @@ export function AuthInputComponent({
   type = "email",
   onChange,
   suffix,
+  value,
 }: AuthInputComponentProps) {
   return (
     <div className="flex flex-col justify-between items-left min-w-full gap-[4px]">
@@ -31,6 +33,7 @@ export function AuthInputComponent({
         type={type}
         onChange={onChange}
         suffix={suffix}
+        value={value}
       />
     </div>
   );
@@ -137,6 +140,7 @@ type AuthInputProps = {
   type?: "email" | "password" | "name" | "text";
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   suffix?: React.ReactNode;
+  value?: string;
 };
 
 function AuthInput({
@@ -144,10 +148,11 @@ function AuthInput({
   type = "email",
   onChange,
   suffix,
+  value,
 }: AuthInputProps) {
   return (
     <AuthInputWrapper>
-      <StyledInput placeholder={placeholder} type={type} onChange={onChange} />
+      <StyledInput placeholder={placeholder} type={type} onChange={onChange} value={value} />
       {suffix && <SuffixContainer>{suffix}</SuffixContainer>}
     </AuthInputWrapper>
   );
