@@ -1,21 +1,3 @@
-import type { Config } from "tailwindcss";
-import { tailwindTypo } from "./src/shared/ui/typography";
-const config: Config = {
-  content: [
-    "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
-    "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
-    "./src/widgets/**/*.{js,ts,jsx,tsx,mdx}",
-    "./src/features/**/*.{js,ts,jsx,tsx,mdx}",
-    "./src/entities/**/*.{js,ts,jsx,tsx,mdx}",
-    "./src/shared/**/*.{js,ts,jsx,tsx,mdx}",
-  ],
-  theme: {
-    extend: {
-      fontFamily: tailwindTypo.fontFamily,
-      fontSize: tailwindTypo.fontSize,
-    },
-  },
-  plugins: [],
-};
-
-export default config;
+// Tailwind v4: 테마 설정은 globals.css의 @theme 블록에서 관리.
+// content 자동 탐지 및 설정 파일 로드 방식이 변경되어 이 파일은 사용되지 않음.
+export default {};
