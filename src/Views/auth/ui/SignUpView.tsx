@@ -3,7 +3,7 @@
 import { useState } from "react";
 
 // ===== hook =====
-import { useSignupFormData } from "../_model/useSignupFormData";
+import { useSignupFormData } from "../model/useSignupFormData";
 // ===== ui components =====
 import {
   AuthInputComponent as LoginInput,

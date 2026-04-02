@@ -1,37 +1,6 @@
-"use client";
-
-// ===== hook =====
-import { useAuthMode } from "./_model/useAuthModeTab";
-
-// ===== ui components(SSR) =====
-import LeftImage from "./_ui/LeftImage";
-
-// ===== ui components(CSR) =====
-import { AuthMethod } from "./_ui/LoginComponents";
-import LoginView from "./_ui/LoginView";
-import SignupView from "./_ui/SignUpView";
+// Views/auth
+import { AuthView } from "@/Views/auth";
 
 export default function AuthPage() {
-  const { mode, setMode, isLogin } = useAuthMode();
-
-  return (
-    <div className="flex justify-center items-center w-screen h-screen bg-[var(--color-bg-default)] p-[224px_115px]">
-      {/* 로그인 및 회원가입 컴포넌트 */}
-      <div className="flex flex-row justify-between items-stretch min-h-full p-[32px] gap-[32px] bg-white rounded-3xl shadow-[0_2px_16px_0_rgba(0,0,0,0.06)]">
-        {/* =========== 좌측 이미지 =========== */}
-        <LeftImage />
-
-        {/* =========== loginForm / 우측 로그인 폼 =========== */}
-        <div className="flex flex-col justify-between items-stretch min-w-[374.667px] w-full h-full">
-          {/* 로그인/회원가입 선택 토글*/}
-          <AuthMethod state={mode} onToggle={setMode} />
-
-          {/* 뷰 분기점 */}
-          <div className="flex flex-col flex-1 min-w-full">
-            {isLogin ? <LoginView /> : <SignupView />}
-          </div>
-        </div>
-      </div>
-    </div>
-  );
+  return <AuthView />;
 }
