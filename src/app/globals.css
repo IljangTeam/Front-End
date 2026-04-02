@@ -213,5 +213,5 @@ body {
 
 input,
 textarea {
-  caret-color: var(--color-text-accent) !important;
+  caret-color: var(--color-text-accent);
 }
