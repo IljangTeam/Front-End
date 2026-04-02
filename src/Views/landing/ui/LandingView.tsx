@@ -1,8 +1,10 @@
+import LandingGNB from "./LandingGNB";
+
 export default function LandingView() {
   return (
     <main className="min-h-screen bg-(--color-surface-default)">
       {/* 섹션 0: LandingGNB — fixed, z-50 */}
-      {/* <LandingGNB /> */}
+      <LandingGNB />
 
       {/* 섹션 1: Hero — sticky, 100vh. Meetings가 위로 덮어씌움 */}
       <section id="hero" className="sticky top-0 z-0">
