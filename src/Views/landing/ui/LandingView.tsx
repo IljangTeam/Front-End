@@ -1,4 +1,5 @@
 import LandingGNB from "./LandingGNB";
+import HeroSection from "./HeroSection";
 
 export default function LandingView() {
   return (
@@ -8,9 +9,7 @@ export default function LandingView() {
 
       {/* 섹션 1: Hero — sticky, 100vh. Meetings가 위로 덮어씌움 */}
       <section id="hero" className="sticky top-0 z-0">
-        <div className="flex h-screen items-center justify-center bg-(--color-bg-default)">
-          <span className="text-(--color-text-tertiary)">Hero Section</span>
-        </div>
+        <HeroSection />
       </section>
 
       {/* 섹션 2~5: Hero 위로 올라오는 콘텐츠 영역 */}

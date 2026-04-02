@@ -62,7 +62,7 @@ export default function LandingGNB() {
   };
 
   return (
-    <nav className="fixed top-0 right-0 left-0 z-50 flex justify-center pt-3.25">
+    <nav className="fixed top-0 right-0 left-0 z-50 flex justify-center pt-10">
       <div className="flex items-center gap-16 rounded-2xl bg-(--color-surface-default) p-3 shadow-[0_2px_16px_0_rgba(0,0,0,0.06)]">
         {/* 로고 */}
         <div className="flex h-8 items-center gap-2.5 px-1">
