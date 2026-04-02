@@ -1,6 +1,26 @@
+@layer theme, base, components, utilities;
+
 @import "tailwindcss";
+@config "../../tailwind.config.ts";
+
+@font-face {
+  font-family: "Pretendard Variable";
+  src: url("/assets/fonts/PretendardVariable.woff2") format("woff2");
+  font-weight: 400 800; /* 400~800까지 가변 */
+  font-display: swap; /* 렌더링 최적화 추가 (웹폰트 로딩 시 가시성을 유지) */
+  font-style: normal;
+}
 
 :root {
+  font-family:
+    "Pretendard Variable", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+
+  font-size: 16px; /* 폰트 base 설정 */
+  font-synthesis: none; /* 폰트 합성 방지 */
+  text-rendering: optimizelegibility; /* 텍스트 렌더링 최적화 */
+  -webkit-font-smoothing: antialiased; /* 웹킷 브라우저 폰트 부드럽게 */
+  -moz-osx-font-smoothing: grayscale; /* 모질라 브라우저 폰트 부드럽게 */
+
   /* ===========================
      Primitive Tokens (Layer 1)
      =========================== */
@@ -114,16 +134,7 @@
   --gradient-soft: linear-gradient(135deg, #b4a7d6 0%, #f5e6e8 100%);
   --gradient-accent: linear-gradient(135deg, #b4a7d6 0%, #c4a4b5 100%);
 }
-
-body {
-  font-family:
-    Pretendard,
-    Apple SD Gothic Neo,
-    Malgun Gothic,
-    sans-serif;
-}
-
 input,
 textarea {
-  caret-color: var(--color-text-accent) !important;
+  caret-color: var(--color-text-accent);
 }
