@@ -3,7 +3,7 @@
 import { useState } from "react";
 
 // ===== hook =====
-import { useLoginFormData } from "../_model/useLoginFormData";
+import { useLoginFormData } from "../model/useLoginFormData";
 
 // ===== ui components =====
 import {
