@@ -13,8 +13,11 @@ export default function EmotionCacheProvider({
 }) {
   const [cache] = useState(() => {
     const cache = createCache({
-      key: "css", // className prefix를 'css'로 설정
-      prepend: true, // <head>에서 emotion <style>태그 가장 먼저 배치 설정
+      key: "em", // className prefix를 'em'로 설정
+      /* Emotion 스타일은 @layer 미지정(unlayered)
+       → CSS 명세상 레이어 내부 스타일(Tailwind)보다 항상 우선. 
+       prepend:false는 동일 specificity의 unlayered 스타일 간 충돌 시 Emotion이 나중에 오도록 하는 추가 안전장치. */
+      prepend: false,
     });
 
     cache.compat = true;
