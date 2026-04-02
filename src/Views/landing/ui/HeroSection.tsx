@@ -76,7 +76,10 @@ export default function HeroSection() {
 
           {/* CTA 버튼 */}
           <div className="flex items-center gap-3">
-            <button className="flex cursor-pointer items-center gap-2 rounded-xl bg-(--color-interactive-primary) py-3 pr-3 pl-5 text-label-large text-(--color-text-inverse)">
+            <Link
+              href="/auth"
+              className="flex items-center gap-2 rounded-xl bg-(--color-interactive-primary) py-3 pr-3 pl-5 text-label-large text-(--color-text-inverse)"
+            >
               지금 시작하기
               <svg
                 width="20"
@@ -93,8 +96,15 @@ export default function HeroSection() {
                   strokeLinejoin="round"
                 />
               </svg>
-            </button>
-            <button className="cursor-pointer rounded-xl border border-(--color-border-default) bg-(--color-surface-default) px-5 py-3 text-label-large text-(--color-text-primary)">
+            </Link>
+            <button
+              onClick={() =>
+                document
+                  .getElementById("meetings")
+                  ?.scrollIntoView({ behavior: "smooth" })
+              }
+              className="cursor-pointer rounded-xl border border-(--color-border-default) bg-(--color-surface-default) px-5 py-3 text-label-large text-(--color-text-primary)"
+            >
               모임 둘러보기
             </button>
           </div>
