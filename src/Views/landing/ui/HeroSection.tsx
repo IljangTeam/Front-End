@@ -1,7 +1,12 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import HeroTagChip from "./HeroTagChip";
+
+// TODO: API 연동 후 실시간 모임 수를 받아오는 훅으로 교체
+// ex) const { data: count } = useOpenMeetingCount();
+const OPEN_MEETING_COUNT: number | null = 4;
 
 export default function HeroSection() {
   return (
@@ -21,13 +26,15 @@ export default function HeroSection() {
       <div className="relative z-10 flex w-140 flex-col items-center gap-[3vh]">
         {/* 라이브 뱃지 + 헤드라인 그룹 */}
         <div className="flex flex-col items-center gap-[2vh]">
-          {/* 라이브 뱃지 */}
-          <div className="flex items-center gap-2 rounded-full border border-(--color-border-default) bg-(--color-surface-default) px-4 py-2">
-            <span className="size-2 animate-pulse rounded-full bg-(--color-status-success)" />
-            <span className="text-body text-(--color-text-secondary)">
-              지금 4개의 모임이 열려 있어요
-            </span>
-          </div>
+          {/* 라이브 뱃지 — API 실패(null) 시 미노출 */}
+          {OPEN_MEETING_COUNT != null && (
+            <div className="flex items-center gap-2 rounded-full border border-(--color-border-default) bg-(--color-surface-default) px-4 py-2">
+              <span className="size-2 animate-pulse rounded-full bg-(--color-status-success)" />
+              <span className="text-body text-(--color-text-secondary)">
+                지금 {OPEN_MEETING_COUNT}개의 모임이 열려 있어요
+              </span>
+            </div>
+          )}
 
           {/* 헤드라인 3행 */}
           <div className="flex flex-col items-center">
