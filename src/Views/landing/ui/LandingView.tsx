@@ -1,3 +1,64 @@
 export default function LandingView() {
-  return <span>landingView</span>;
+  return (
+    <main className="min-h-screen bg-(--color-surface-default)">
+      {/* 섹션 0: LandingGNB — fixed, z-50 */}
+      {/* <LandingGNB /> */}
+
+      {/* 섹션 1: Hero — sticky, 100vh. Meetings가 위로 덮어씌움 */}
+      <section id="hero" className="sticky top-0 z-0">
+        <div className="flex h-screen items-center justify-center bg-(--color-bg-default)">
+          <span className="text-(--color-text-tertiary)">Hero Section</span>
+        </div>
+      </section>
+
+      {/* 섹션 2~5: Hero 위로 올라오는 콘텐츠 영역 */}
+      <div className="relative z-10">
+        {/* 섹션 2: Meetings — 상단 rounded로 시트 느낌 */}
+        <section
+          id="meetings"
+          className="rounded-t-3xl bg-(--color-surface-default)"
+        >
+          <div className="mx-auto max-w-345 px-7.5 py-20">
+            <span className="text-(--color-text-tertiary)">
+              Meetings Section
+            </span>
+          </div>
+        </section>
+
+        {/* 섹션 3: How it works */}
+        <section id="how-it-works">
+          <div className="mx-auto max-w-345 px-7.5 py-20">
+            <span className="text-(--color-text-tertiary)">
+              How it works Section
+            </span>
+          </div>
+        </section>
+
+        {/* 섹션 4: Feature (서비스 특장점) */}
+        <section>
+          <div className="mx-auto max-w-345 px-7.5 py-20">
+            <span className="text-(--color-text-tertiary)">
+              Feature Section
+            </span>
+          </div>
+        </section>
+
+        {/* 섹션 5: CTA */}
+        <section>
+          <div className="mx-auto max-w-345 px-7.5 py-20">
+            <span className="text-(--color-text-tertiary)">
+              CTA Section
+            </span>
+          </div>
+        </section>
+
+        {/* Footer */}
+        <footer>
+          <div className="mx-auto max-w-345 px-7.5 py-8">
+            <span className="text-(--color-text-tertiary)">Footer</span>
+          </div>
+        </footer>
+      </div>
+    </main>
+  );
 }
