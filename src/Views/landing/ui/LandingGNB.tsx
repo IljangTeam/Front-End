@@ -36,9 +36,15 @@ export default function LandingGNB() {
           }
         }
 
-        // 보이는 섹션 중 DOM 순서가 가장 앞인 것을 활성화, 없으면 hero
+        // 보이는 섹션 중 DOM 순서가 가장 앞인 것을 활성화
         const active = OBSERVED_IDS.find((id) => visibleIds.has(id));
-        setActiveId(active ?? "hero");
+        if (active) {
+          setActiveId(active);
+        } else if (window.scrollY < 100) {
+          // 최상단 근처에서만 hero로 복귀
+          setActiveId("hero");
+        }
+        // 그 외(feature/footer 등 앵커 없는 영역)에서는 마지막 활성 상태 유지
       },
       { rootMargin: "-50% 0px -50% 0px" },
     );
