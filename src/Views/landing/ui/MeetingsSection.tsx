@@ -14,7 +14,7 @@ const MOCK_MEETINGS: MeetingCardProps[] = [
     round: 12,
     tags: [
       { label: "#연남", axis: "location" },
-      { label: "#저녁", axis: "time" },
+      { label: "#아침", axis: "time" },
       { label: "#독서", axis: "goal" },
     ],
     date: "3/8(일) 오전 10:00",
