@@ -33,12 +33,12 @@ export default function LandingView() {
         </section>
 
         {/* 섹션 4: Feature (서비스 특장점) */}
-        <section className="py-5">
+        <section id="feature" className="py-5">
           <FeatureSection />
         </section>
 
         {/* 섹션 5: CTA */}
-        <section>
+        <section id="cta">
           <CtaSection />
         </section>
 

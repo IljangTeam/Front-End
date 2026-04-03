@@ -14,9 +14,19 @@ const NAV_ITEMS = [
 
 // hero는 sticky라 IntersectionObserver로 관측할 수 없으므로 제외한다.
 // hero 외 섹션이 하나도 보이지 않으면 hero로 간주한다.
-const OBSERVED_IDS = NAV_ITEMS.map((item) => item.href.slice(1)).filter(
+const NAV_IDS = NAV_ITEMS.map((item) => item.href.slice(1)).filter(
   (id) => id !== "hero",
 );
+
+// feature, cta 섹션은 GNB 항목이 없지만 how-it-works로 매핑하여
+// 해당 영역에서도 "How it works"가 활성 상태를 유지하도록 한다.
+const ALIAS_MAP: Record<string, string> = {
+  feature: "how-it-works",
+  cta: "how-it-works",
+};
+
+// IO가 실제로 관측할 모든 섹션 id
+const OBSERVED_IDS = [...NAV_IDS, ...Object.keys(ALIAS_MAP)];
 
 export default function LandingGNB() {
   const [activeId, setActiveId] = useState<string>("hero");
@@ -25,37 +35,65 @@ export default function LandingGNB() {
   // hero는 sticky라 관측 불가 → hero 외 섹션만 관측하고, 아무것도 안 보이면 hero로 간주.
   // visibleIds로 현재 보이는 섹션을 누적 추적한다 (콜백은 상태가 변한 entry만 전달하므로).
   useEffect(() => {
-    const visibleIds = new Set<string>();
+    // 현재 보이는 nav id를 추적 (alias 해석 후의 값)
+    const visibleNavIds = new Set<string>();
+    // 원시 섹션 id → 몇 개가 보이는지 (alias 여러 개가 같은 nav id로 매핑되므로 카운트)
+    const rawVisible = new Set<string>();
+
+    const resolve = (id: string) => ALIAS_MAP[id] ?? id;
+
+    const updateActive = () => {
+      const active = NAV_IDS.find((id) => visibleNavIds.has(id));
+      if (active) {
+        setActiveId(active);
+      } else {
+        // 관측 대상이 하나도 안 보이면 hero로 복귀
+        setActiveId("hero");
+      }
+    };
 
     const observer = new IntersectionObserver(
       (entries) => {
         for (const entry of entries) {
+          const rawId = entry.target.id;
           if (entry.isIntersecting) {
-            visibleIds.add(entry.target.id);
+            rawVisible.add(rawId);
+            visibleNavIds.add(resolve(rawId));
           } else {
-            visibleIds.delete(entry.target.id);
+            rawVisible.delete(rawId);
+            const navId = resolve(rawId);
+            // alias가 여러 개일 수 있으므로 같은 navId를 가리키는 raw가 전부 사라졌을 때만 제거
+            const stillVisible = [...rawVisible].some(
+              (r) => resolve(r) === navId,
+            );
+            if (!stillVisible) visibleNavIds.delete(navId);
           }
         }
-
-        // 보이는 섹션 중 DOM 순서가 가장 앞인 것을 활성화
-        const active = OBSERVED_IDS.find((id) => visibleIds.has(id));
-        if (active) {
-          setActiveId(active);
-        } else if (window.scrollY < 100) {
-          // 최상단 근처에서만 hero로 복귀
-          setActiveId("hero");
-        }
-        // 그 외(feature/footer 등 앵커 없는 영역)에서는 마지막 활성 상태 유지
+        updateActive();
       },
       { rootMargin: "-50% 0px -50% 0px" },
     );
+
+    // IO 콜백은 교차 상태 변화 시에만 발생하므로,
+    // meetings가 뷰포트를 벗어난 뒤 스크롤이 계속 올라가는 경우를 감지하기 위해
+    // 스크롤 리스너로 보완한다.
+    const handleScroll = () => {
+      if (visibleNavIds.size === 0) {
+        setActiveId("hero");
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
 
     for (const id of OBSERVED_IDS) {
       const el = document.getElementById(id);
       if (el) observer.observe(el);
     }
 
-    return () => observer.disconnect();
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("scroll", handleScroll);
+    };
   }, []);
 
   const handleNavClick = (href: string) => {
