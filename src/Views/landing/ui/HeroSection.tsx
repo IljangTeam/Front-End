@@ -13,7 +13,7 @@ export default function HeroSection() {
   // 글로벌 scrollY — sticky 요소에서도 정확하게 동작
   const { scrollY } = useScroll();
 
-  // 서브카피 / CTA / 검색바: 0~200px에 위로 올라가며 먼저 사라짐
+  // 서브카피 / CTA / 검색바: 0~100px에 위로 올라가며 먼저 사라짐
   const bottomOpacity = useTransform(scrollY, [0, 100], [1, 0]);
   const bottomY = useTransform(scrollY, [0, 100], [0, -30]);
 
@@ -97,7 +97,7 @@ export default function HeroSection() {
           </motion.div>
         </div>
 
-        {/* 서브카피 + CTA: 0~200px에 위로 올라가며 먼저 사라짐 */}
+        {/* 서브카피 + CTA: 0~100px에 위로 올라가며 먼저 사라짐 */}
         <motion.div
           style={{ opacity: bottomOpacity, y: bottomY }}
           className="flex flex-col items-center gap-[2.5vh]"

@@ -1,6 +1,7 @@
 import LandingGNB from "./LandingGNB";
 import HeroSection from "./HeroSection";
 import MeetingsSection from "./MeetingsSection";
+import HowItWorksSection from "./HowItWorksSection";
 
 export default function LandingView() {
   return (
@@ -24,12 +25,8 @@ export default function LandingView() {
         </section>
 
         {/* 섹션 3: How it works */}
-        <section id="how-it-works" className="scroll-mt-25">
-          <div className="mx-auto max-w-345 px-7.5 py-20">
-            <span className="text-(--color-text-tertiary)">
-              How it works Section
-            </span>
-          </div>
+        <section id="how-it-works" className="scroll-mt-25 py-7">
+          <HowItWorksSection />
         </section>
 
         {/* 섹션 4: Feature (서비스 특장점) */}
