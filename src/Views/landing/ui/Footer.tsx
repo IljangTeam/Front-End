@@ -1,5 +1,3 @@
-import Image from "next/image";
-
 export default function Footer() {
   return (
     <footer className="border-t border-[#ebebeb] px-30 py-8">

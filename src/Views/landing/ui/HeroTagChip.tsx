@@ -62,16 +62,9 @@ function shuffle<T>(arr: T[]): T[] {
 
 export default function HeroTagChip({ type }: HeroTagChipProps) {
   const values = TAG_VALUES[type];
-  // SSR과 첫 hydration에서 동일한 값을 보장하기 위해 고정 배열로 초기화
+  // SSR hydration 안전: 고정 배열로 초기화, 첫 interval 콜백에서 셔플 시작
   const [shuffled, setShuffled] = useState<string[]>(values);
   const [index, setIndex] = useState(0);
-  const [mounted, setMounted] = useState(false);
-
-  // mount 후 셔플 시작
-  useEffect(() => {
-    setShuffled(shuffle(values));
-    setMounted(true);
-  }, [values]);
 
   const advance = useCallback(() => {
     setIndex((prev) => {
@@ -85,10 +78,9 @@ export default function HeroTagChip({ type }: HeroTagChipProps) {
   }, [shuffled.length, values]);
 
   useEffect(() => {
-    if (!mounted) return;
     const id = setInterval(advance, INTERVALS[type]);
     return () => clearInterval(id);
-  }, [advance, type, mounted]);
+  }, [advance, type]);
 
   const style = TAG_STYLES[type];
   const currentValue = shuffled[index];
