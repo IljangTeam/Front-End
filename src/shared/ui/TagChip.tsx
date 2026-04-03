@@ -2,23 +2,25 @@
 
 import { css } from "@emotion/react";
 import styled from "@emotion/styled";
+import { TAG_AXIS } from "../types/SettingTagType";
 
 interface TagChipProps {
-  axis: "location" | "time" | "goal";
+  axis: TAG_AXIS;
   state: "default" | "selected" | "disabled";
+  content: string;
 }
 
 /* TODO : API 연동 후 값에 맞게 변경 */
-const Temp_TagChipContents = {
-  location: "온라인",
-  time: "저녁",
-  goal: "독서",
-};
+// const Temp_TagChipContents = {
+//   location: "온라인",
+//   time: "저녁",
+//   goal: "독서",
+// };
 
-export default function TagChip({ axis, state }: TagChipProps) {
+export default function TagChip({ axis, state, content }: TagChipProps) {
   return (
     <Container axis={axis} state={state}>
-      #{Temp_TagChipContents[axis]}
+      {/* #{Temp_TagChipContents[axis]} */}# {content}
     </Container>
   );
 }
@@ -70,10 +72,10 @@ const Container = styled.button<{
   ${({ axis, state }) => {
     if (state === "disabled") {
       return css`
+        cursor: not-allowed;
         color: var(--color-text-tertiary);
         background: var(--color-surface-default);
-        border: none;
-        cursor: not-allowed;
+        border: 1px solid var(--color-border-default);
         opacity: 0.6;
       `;
     }
