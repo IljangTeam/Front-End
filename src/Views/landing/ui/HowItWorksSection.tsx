@@ -1,4 +1,7 @@
+"use client";
+
 import Image from "next/image";
+import { motion } from "framer-motion";
 
 const STEPS = [
   {
@@ -32,7 +35,13 @@ const STEPS = [
 
 export default function HowItWorksSection() {
   return (
-    <div className="mx-auto max-w-345 px-7.5">
+    <motion.div
+      initial={{ opacity: 0, y: 60 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: false, margin: "-100px" }}
+      transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
+      className="mx-auto max-w-345 px-7.5"
+    >
       <div className="flex flex-col items-center gap-12 rounded-4xl border border-(--color-border-default) bg-(--color-bg-default) py-16 px-8">
         {/* 타이틀 */}
         <div className="flex flex-col items-center gap-3">
@@ -67,7 +76,7 @@ export default function HowItWorksSection() {
               </span>
 
               {/* 제목 */}
-              <span className="text-[17px] font-bold leading-[1.5] text-(--color-text-primary)">
+              <span className="text-[17px] font-bold leading-normal text-(--color-text-primary)">
                 {step.title}
               </span>
 
@@ -79,6 +88,6 @@ export default function HowItWorksSection() {
           ))}
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 }

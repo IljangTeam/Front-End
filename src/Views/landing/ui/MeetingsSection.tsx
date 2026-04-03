@@ -1,5 +1,8 @@
+"use client";
+
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
+import { motion } from "framer-motion";
 import MeetingCard from "./MeetingCard";
 import type { MeetingCardProps } from "./MeetingCard";
 
@@ -71,22 +74,31 @@ export default function MeetingsSection() {
         </div>
         <Link
           href="/feed"
-          className="flex items-center gap-1 text-body text-(--color-text-secondary)"
+          className="flex items-center gap-1 text-body text-(--color-text-secondary) animate-pulse"
         >
           전체 보기
           <ArrowRight size={14} />
         </Link>
       </div>
 
-      {/* 카드 그리드 */}
+      {/* 카드 그리드 — 차례대로 위로 올라오는 stagger */}
       <div className="grid grid-cols-3 gap-5">
-        {MOCK_MEETINGS.map((meeting) => (
-          <div
+        {MOCK_MEETINGS.map((meeting, i) => (
+          <motion.div
             key={`${meeting.title}-${meeting.round}`}
-            className="transition-transform duration-200 hover:-translate-y-0.75"
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: false, margin: "-50px" }}
+            transition={{
+              duration: 0.5,
+              delay: i * 0.15,
+              ease: [0.25, 0.1, 0.25, 1],
+            }}
           >
-            <MeetingCard {...meeting} />
-          </div>
+            <div className="transition-transform duration-200 hover:-translate-y-0.75">
+              <MeetingCard {...meeting} />
+            </div>
+          </motion.div>
         ))}
       </div>
     </div>
