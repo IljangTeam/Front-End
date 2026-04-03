@@ -3,6 +3,8 @@ import HeroSection from "./HeroSection";
 import MeetingsSection from "./MeetingsSection";
 import HowItWorksSection from "./HowItWorksSection";
 import FeatureSection from "./FeatureSection";
+import CtaSection from "./CtaSection";
+import Footer from "./Footer";
 
 export default function LandingView() {
   return (
@@ -37,19 +39,11 @@ export default function LandingView() {
 
         {/* 섹션 5: CTA */}
         <section>
-          <div className="mx-auto max-w-345 px-7.5 py-20">
-            <span className="text-(--color-text-tertiary)">
-              CTA Section
-            </span>
-          </div>
+          <CtaSection />
         </section>
 
         {/* Footer */}
-        <footer>
-          <div className="mx-auto max-w-345 px-7.5 py-8">
-            <span className="text-(--color-text-tertiary)">Footer</span>
-          </div>
-        </footer>
+        <Footer />
       </div>
     </main>
   );
