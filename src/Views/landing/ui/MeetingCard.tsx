@@ -71,7 +71,7 @@ export default function MeetingCard({
             <div className="flex items-center gap-1">
               {tags.map((tag) => (
                 <span
-                  key={tag.label}
+                  key={`${tag.axis}-${tag.label}`}
                   className={`rounded-full px-2 py-1 text-label font-semibold ${TAG_AXIS_STYLES[tag.axis]}`}
                 >
                   {tag.label}
