@@ -54,7 +54,7 @@ export default function HowItWorksSection() {
         </div>
 
         {/* 4컬럼 그리드 */}
-        <div className="grid w-300 grid-cols-4 gap-11.5">
+        <div className="grid w-full max-w-300 grid-cols-2 gap-11.5 xl:grid-cols-4">
           {STEPS.map((step) => (
             <div
               key={step.step}
