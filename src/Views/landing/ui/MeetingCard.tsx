@@ -1,8 +1,8 @@
-import Image from "next/image";
+import { Tag, Clock, Flag, Users } from "lucide-react";
 
 type TagAxis = "location" | "time" | "goal";
 
-interface Tag {
+interface TagItem {
   label: string;
   axis: TagAxis;
 }
@@ -10,7 +10,7 @@ interface Tag {
 export interface MeetingCardProps {
   title: string;
   round: number;
-  tags: Tag[];
+  tags: TagItem[];
   date: string;
   location: string;
   currentMembers: number;
@@ -57,18 +57,13 @@ export default function MeetingCard({
       </div>
 
       {/* 카드 바디 */}
-      <div className="flex flex-col gap-2 rounded-xl border border-(--color-border-default) bg-(--color-surface-default) px-[17px] pt-[17px] pb-[13px]">
+      <div className="flex flex-col gap-2 rounded-xl border border-(--color-border-default) bg-(--color-surface-default) px-4.25 pt-4.25 pb-3.25">
         {/* 메타 정보 */}
         <div className="flex flex-col gap-1">
           {/* 태그 행 */}
           <div className="flex items-center gap-4 py-1">
             <div className="flex items-center gap-2">
-              <Image
-                src="/assets/icons/tag-landing-meeting.svg"
-                alt=""
-                width={16}
-                height={16}
-              />
+              <Tag size={16} className="text-(--color-text-secondary)" />
               <span className="text-body text-(--color-text-secondary)">
                 태그
               </span>
@@ -88,12 +83,7 @@ export default function MeetingCard({
           {/* 일시 행 */}
           <div className="flex items-center gap-4 py-1">
             <div className="flex items-center gap-2">
-              <Image
-                src="/assets/icons/clock-landing-meeting.svg"
-                alt=""
-                width={16}
-                height={16}
-              />
+              <Clock size={16} className="text-(--color-text-secondary)" />
               <span className="text-body text-(--color-text-secondary)">
                 일시
               </span>
@@ -106,12 +96,7 @@ export default function MeetingCard({
           {/* 장소 행 */}
           <div className="flex items-center gap-4 py-1">
             <div className="flex items-center gap-2">
-              <Image
-                src="/assets/icons/flag-landing-meeting.svg"
-                alt=""
-                width={16}
-                height={16}
-              />
+              <Flag size={16} className="text-(--color-text-secondary)" />
               <span className="text-body text-(--color-text-secondary)">
                 장소
               </span>
@@ -124,12 +109,7 @@ export default function MeetingCard({
           {/* 인원 행 */}
           <div className="flex items-center gap-4 py-1">
             <div className="flex items-center gap-2">
-              <Image
-                src="/assets/icons/users-landing-meeting.svg"
-                alt=""
-                width={16}
-                height={16}
-              />
+              <Users size={16} className="text-(--color-text-secondary)" />
               <span className="text-body text-(--color-text-secondary)">
                 인원
               </span>

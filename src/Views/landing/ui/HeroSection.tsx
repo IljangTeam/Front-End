@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { ChevronRight, Search } from "lucide-react";
 import HeroTagChip from "./HeroTagChip";
 
 // TODO: API 연동 후 실시간 모임 수를 받아오는 훅으로 교체
@@ -81,21 +82,7 @@ export default function HeroSection() {
               className="flex items-center gap-2 rounded-xl bg-(--color-interactive-primary) py-3 pr-3 pl-5 text-label-large text-(--color-text-inverse)"
             >
               지금 시작하기
-              <svg
-                width="20"
-                height="20"
-                viewBox="0 0 20 20"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M7.5 15L12.5 10L7.5 5"
-                  stroke="currentColor"
-                  strokeWidth="1.67"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
+              <ChevronRight size={20} />
             </Link>
             <button
               onClick={() =>
@@ -113,21 +100,7 @@ export default function HeroSection() {
 
       {/* 검색바 */}
       <div className="relative z-10 mt-[4vh] flex w-140 items-center gap-2 rounded-[14px] bg-(--color-surface-default) px-4 py-2 shadow-[0_2px_16px_0_rgba(0,0,0,0.06)]">
-        <svg
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M21 21L16.65 16.65M19 11C19 15.4183 15.4183 19 11 19C6.58172 19 3 15.4183 3 11C3 6.58172 6.58172 3 11 3C15.4183 3 19 6.58172 19 11Z"
-            stroke="var(--color-text-tertiary)"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        </svg>
+        <Search size={24} className="text-(--color-text-tertiary)" />
         <span className="text-body text-(--color-text-tertiary)">
           모임 이름, 스킬, 장소로 검색
         </span>

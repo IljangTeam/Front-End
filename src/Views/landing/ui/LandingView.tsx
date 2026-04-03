@@ -1,5 +1,6 @@
 import LandingGNB from "./LandingGNB";
 import HeroSection from "./HeroSection";
+import MeetingsSection from "./MeetingsSection";
 
 export default function LandingView() {
   return (
@@ -19,11 +20,7 @@ export default function LandingView() {
           id="meetings"
           className="rounded-t-3xl bg-(--color-surface-default)"
         >
-          <div className="mx-auto max-w-345 px-7.5 py-20">
-            <span className="text-(--color-text-tertiary)">
-              Meetings Section
-            </span>
-          </div>
+          <MeetingsSection />
         </section>
 
         {/* 섹션 3: How it works */}
