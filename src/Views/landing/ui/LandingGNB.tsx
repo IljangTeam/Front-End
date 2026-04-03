@@ -4,6 +4,7 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 
 const NAV_ITEMS = [
   { label: "Start Here", href: "#hero" },
@@ -131,12 +132,18 @@ export default function LandingGNB() {
 
         {/* Auth Buttons */}
         <div className="flex items-center gap-4">
-          <button className="cursor-pointer whitespace-nowrap rounded-xl px-4 py-2 text-center text-label-large text-(--color-text-secondary)">
+          <Link
+            href="/auth"
+            className="whitespace-nowrap rounded-xl px-4 py-2 text-center text-label-large text-(--color-text-secondary)"
+          >
             로그인
-          </button>
-          <button className="cursor-pointer whitespace-nowrap rounded-xl bg-(--color-interactive-primary) px-4 py-2 text-center text-label-large text-(--color-text-inverse)">
+          </Link>
+          <Link
+            href="/auth"
+            className="whitespace-nowrap rounded-xl bg-(--color-interactive-primary) px-4 py-2 text-center text-label-large text-(--color-text-inverse)"
+          >
             회원가입
-          </button>
+          </Link>
         </div>
       </div>
     </nav>
