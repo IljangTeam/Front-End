@@ -37,7 +37,7 @@ export default function MeetingCard({
   hostName,
   hostInitial,
 }: MeetingCardProps) {
-  const remaining = maxMembers - currentMembers;
+  const remaining = Math.max(0, maxMembers - currentMembers);
 
   return (
     <div className="flex flex-col gap-2 rounded-2xl border border-(--color-border-default) bg-(--color-bg-default) px-2 pt-3 pb-2 backdrop-blur-[2px]">
