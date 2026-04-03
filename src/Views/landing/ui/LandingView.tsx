@@ -18,13 +18,13 @@ export default function LandingView() {
         {/* 섹션 2: Meetings — 상단 rounded로 시트 느낌 */}
         <section
           id="meetings"
-          className="rounded-t-3xl bg-(--color-surface-default)"
+          className="scroll-mt-25 rounded-t-3xl bg-(--color-surface-default)"
         >
           <MeetingsSection />
         </section>
 
         {/* 섹션 3: How it works */}
-        <section id="how-it-works">
+        <section id="how-it-works" className="scroll-mt-25">
           <div className="mx-auto max-w-345 px-7.5 py-20">
             <span className="text-(--color-text-tertiary)">
               How it works Section
