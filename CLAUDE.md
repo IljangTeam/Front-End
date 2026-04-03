@@ -20,7 +20,7 @@ npm run lint     # ESLint 실행 (flat config)
 
 ### 레이어 구조
 
-```
+```text
 src/
 ├── app/           # 라우팅 레이어 — Views를 import하는 얇은 페이지 파일
 ├── Views/         # 슬라이스 레이어 — 피처 모듈 (auth, landing, feed, authSetting)
@@ -37,6 +37,7 @@ src/
 ### 스타일링: Tailwind CSS 4 + Emotion
 
 `EmotionCacheProvider`(루트 레이아웃)를 통해 두 시스템이 공존:
+
 - **Tailwind CSS 4**: 레이아웃, 정적 스타일링 (간격, 크기, 색상 등 유틸리티 클래스)
 - **Emotion** (CSS-in-JS): 상태 기반 동적 스타일링 (hover, active, 조건부 스타일 등), className prefix `em`
 - Emotion 스타일은 unlayered이므로 Tailwind `@layer` 스타일보다 항상 우선
@@ -44,12 +45,14 @@ src/
 ### 타이포그래피 시스템
 
 `src/shared/ui/typography/typo.tokens.ts`가 단일 진실 공급원(Single Source of Truth). Figma 값을 raw px로 입력하면 unitless line-height, em letter-spacing으로 자동 변환. 두 가지로 export:
+
 - `TYPO` — Emotion에서 사용하는 계산된 토큰 객체
 - `tailwindTypo` — `tailwind.config.ts`에서 소비 (`text-heading-1`, `text-body` 등의 클래스)
 
 ### 디자인 토큰 (컬러)
 
 `src/app/globals.css`에 CSS 커스텀 프로퍼티로 정의, 3계층:
+
 1. **Primitive** (`--palette-*`) — 원시 색상값
 2. **Semantic** (`--color-*`) — 용도별 별칭 (bg, text, interactive, tag, status)
 3. **Legacy** (`--color-ink`, `--color-bg` 등) — 하위 호환
