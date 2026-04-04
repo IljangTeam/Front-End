@@ -2,11 +2,11 @@ import type { ComponentType, ReactNode } from "react";
 import type { IconProps } from "@/shared/ui/icons";
 import { Tag, Clock, Flag, Users } from "@/shared/ui/icons";
 
-type TagAxis = "location" | "time" | "goal";
+type TagCategory = "location" | "time" | "goal";
 
 interface TagItem {
   label: string;
-  axis: TagAxis;
+  category: TagCategory;
 }
 
 export interface MeetingCardProps {
@@ -21,7 +21,7 @@ export interface MeetingCardProps {
   hostInitial: string;
 }
 
-const TAG_AXIS_STYLES: Record<TagAxis, string> = {
+const TAG_AXIS_STYLES: Record<TagCategory, string> = {
   location:
     "bg-(--color-tag-location-bg) text-(--color-tag-location)",
   time: "bg-(--color-tag-time-bg) text-(--color-tag-time)",
@@ -50,10 +50,10 @@ function MetaRow({
   );
 }
 
-function TagChip({ axis, children }: { axis: TagAxis; children: ReactNode }) {
+function TagChip({ category, children }: { category: TagCategory; children: ReactNode }) {
   return (
     <span
-      className={`rounded-full px-2 py-1 text-label font-semibold ${TAG_AXIS_STYLES[axis]}`}
+      className={`rounded-full px-2 py-1 text-label font-semibold ${TAG_AXIS_STYLES[category]}`}
     >
       {children}
     </span>
@@ -112,7 +112,7 @@ export default function MeetingCard({
           <MetaRow icon={Tag} label="태그">
             <div className="flex items-center gap-1">
               {tags.map((tag) => (
-                <TagChip key={`${tag.axis}-${tag.label}`} axis={tag.axis}>
+                <TagChip key={`${tag.category}-${tag.label}`} category={tag.category}>
                   {tag.label}
                 </TagChip>
               ))}
