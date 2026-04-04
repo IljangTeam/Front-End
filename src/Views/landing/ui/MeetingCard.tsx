@@ -1,3 +1,5 @@
+import type { ComponentType, ReactNode } from "react";
+import type { IconProps } from "@/shared/ui/icons";
 import { Tag, Clock, Flag, Users } from "@/shared/ui/icons";
 
 type TagAxis = "location" | "time" | "goal";
@@ -25,6 +27,53 @@ const TAG_AXIS_STYLES: Record<TagAxis, string> = {
   time: "bg-(--color-tag-time-bg) text-(--color-tag-time)",
   goal: "bg-(--color-tag-goal-bg) text-(--color-tag-goal)",
 };
+
+function MetaRow({
+  icon: Icon,
+  label,
+  children,
+}: {
+  icon: ComponentType<IconProps>;
+  label: string;
+  children: ReactNode;
+}) {
+  return (
+    <div className="flex items-center gap-4 py-1">
+      <div className="flex items-center gap-2">
+        <Icon size={16} className="text-(--color-text-secondary)" />
+        <span className="text-body text-(--color-text-secondary)">
+          {label}
+        </span>
+      </div>
+      {children}
+    </div>
+  );
+}
+
+function TagChip({ axis, children }: { axis: TagAxis; children: ReactNode }) {
+  return (
+    <span
+      className={`rounded-full px-2 py-1 text-label font-semibold ${TAG_AXIS_STYLES[axis]}`}
+    >
+      {children}
+    </span>
+  );
+}
+
+function HostChip({ initial, name }: { initial: string; name: string }) {
+  return (
+    <div className="flex items-center gap-2">
+      <div className="flex size-5.5 items-center justify-center rounded-[11px] bg-(--color-accent-subtle)">
+        <span className="text-label text-(--color-text-accent)">
+          {initial}
+        </span>
+      </div>
+      <span className="text-body-small text-(--color-text-secondary)">
+        {name}
+      </span>
+    </div>
+  );
+}
 
 export default function MeetingCard({
   title,
@@ -60,60 +109,29 @@ export default function MeetingCard({
       <div className="flex flex-col gap-2 rounded-xl border border-(--color-border-default) bg-(--color-surface-default) px-4.25 pt-4.25 pb-3.25">
         {/* 메타 정보 */}
         <div className="flex flex-col gap-1">
-          {/* 태그 행 */}
-          <div className="flex items-center gap-4 py-1">
-            <div className="flex items-center gap-2">
-              <Tag size={16} className="text-(--color-text-secondary)" />
-              <span className="text-body text-(--color-text-secondary)">
-                태그
-              </span>
-            </div>
+          <MetaRow icon={Tag} label="태그">
             <div className="flex items-center gap-1">
               {tags.map((tag) => (
-                <span
-                  key={`${tag.axis}-${tag.label}`}
-                  className={`rounded-full px-2 py-1 text-label font-semibold ${TAG_AXIS_STYLES[tag.axis]}`}
-                >
+                <TagChip key={`${tag.axis}-${tag.label}`} axis={tag.axis}>
                   {tag.label}
-                </span>
+                </TagChip>
               ))}
             </div>
-          </div>
+          </MetaRow>
 
-          {/* 일시 행 */}
-          <div className="flex items-center gap-4 py-1">
-            <div className="flex items-center gap-2">
-              <Clock size={16} className="text-(--color-text-secondary)" />
-              <span className="text-body text-(--color-text-secondary)">
-                일시
-              </span>
-            </div>
+          <MetaRow icon={Clock} label="일시">
             <span className="text-body text-(--color-text-primary)">
               {date}
             </span>
-          </div>
+          </MetaRow>
 
-          {/* 장소 행 */}
-          <div className="flex items-center gap-4 py-1">
-            <div className="flex items-center gap-2">
-              <Flag size={16} className="text-(--color-text-secondary)" />
-              <span className="text-body text-(--color-text-secondary)">
-                장소
-              </span>
-            </div>
+          <MetaRow icon={Flag} label="장소">
             <span className="text-body text-(--color-text-primary)">
               {location}
             </span>
-          </div>
+          </MetaRow>
 
-          {/* 인원 행 */}
-          <div className="flex items-center gap-4 py-1">
-            <div className="flex items-center gap-2">
-              <Users size={16} className="text-(--color-text-secondary)" />
-              <span className="text-body text-(--color-text-secondary)">
-                인원
-              </span>
-            </div>
+          <MetaRow icon={Users} label="인원">
             <div className="flex items-center gap-1">
               <span className="text-body text-(--color-text-primary)">
                 {currentMembers}/{maxMembers}명
@@ -123,21 +141,12 @@ export default function MeetingCard({
                 {remaining}자리 남았어요
               </span>
             </div>
-          </div>
+          </MetaRow>
         </div>
 
         {/* 구분선 + 유저칩 */}
         <div className="flex flex-col items-end border-t border-(--color-border-subtle) pt-3">
-          <div className="flex items-center gap-2">
-            <div className="flex size-5.5 items-center justify-center rounded-[11px] bg-(--color-accent-subtle)">
-              <span className="text-label text-(--color-text-accent)">
-                {hostInitial}
-              </span>
-            </div>
-            <span className="text-body-small text-(--color-text-secondary)">
-              {hostName}
-            </span>
-          </div>
+          <HostChip initial={hostInitial} name={hostName} />
         </div>
       </div>
     </div>
