@@ -21,7 +21,7 @@ export interface MeetingCardProps {
   hostInitial: string;
 }
 
-const TAG_AXIS_STYLES: Record<TagCategory, string> = {
+const TAG_CATEGORY_STYLES: Record<TagCategory, string> = {
   location:
     "bg-(--color-tag-location-bg) text-(--color-tag-location)",
   time: "bg-(--color-tag-time-bg) text-(--color-tag-time)",
@@ -40,7 +40,7 @@ function MetaRow({
   return (
     <div className="flex items-center gap-4 py-1">
       <div className="flex items-center gap-2">
-        <Icon size={16} className="text-(--color-text-secondary)" />
+        <Icon size={16} className="text-(--color-text-secondary)" aria-hidden="true" />
         <span className="text-body text-(--color-text-secondary)">
           {label}
         </span>
@@ -53,7 +53,7 @@ function MetaRow({
 function TagChip({ category, children }: { category: TagCategory; children: ReactNode }) {
   return (
     <span
-      className={`rounded-full px-2 py-1 text-label font-semibold ${TAG_AXIS_STYLES[category]}`}
+      className={`rounded-full px-2 py-1 text-label font-semibold ${TAG_CATEGORY_STYLES[category]}`}
     >
       {children}
     </span>
@@ -63,7 +63,7 @@ function TagChip({ category, children }: { category: TagCategory; children: Reac
 function HostChip({ initial, name }: { initial: string; name: string }) {
   return (
     <div className="flex items-center gap-2">
-      <div className="flex size-5.5 items-center justify-center rounded-[11px] bg-(--color-accent-subtle)">
+      <div className="flex size-5.5 items-center justify-center rounded-[11px] bg-(--color-accent-subtle)" aria-hidden="true">
         <span className="text-label text-(--color-text-accent)">
           {initial}
         </span>
