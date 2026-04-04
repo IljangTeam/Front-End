@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight } from "@/shared/ui/icons";
 import { motion } from "framer-motion";
 import MeetingCard from "./MeetingCard";
 import type { MeetingCardProps } from "./MeetingCard";

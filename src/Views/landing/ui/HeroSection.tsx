@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { ChevronRight, Search } from "lucide-react";
+import { ChevronRight, Search } from "@/shared/ui/icons";
 import { useScroll, useTransform, motion } from "framer-motion";
 import HeroTagChip from "./HeroTagChip";
 

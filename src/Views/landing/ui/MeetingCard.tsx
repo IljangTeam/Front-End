@@ -1,4 +1,4 @@
-import { Tag, Clock, Flag, Users } from "lucide-react";
+import { Tag, Clock, Flag, Users } from "@/shared/ui/icons";
 
 type TagAxis = "location" | "time" | "goal";
 
