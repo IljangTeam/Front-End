@@ -2,7 +2,7 @@
 
 import styled from "@emotion/styled";
 import { axisColors } from "@/shared/ui";
-import { MapPinIcon, ClockIcon, TargetIcon } from "@/shared/assets/icons";
+import { LocationIcon, TimeIcon, GoalIcon } from "@/shared/assets/icons";
 import { TAG_AXIS } from "@/shared/types/SettingTagType";
 
 interface StepTagProps {
@@ -18,9 +18,9 @@ const TAG_CONTENTS = {
 export default function StepTag({ axis }: StepTagProps) {
   return (
     <Container axis={axis}>
-      {axis === "location" && <MapPinIcon />}
-      {axis === "time" && <ClockIcon />}
-      {axis === "goal" && <TargetIcon />}
+      {axis === "location" && <LocationIcon />}
+      {axis === "time" && <TimeIcon />}
+      {axis === "goal" && <GoalIcon />}
 
       {TAG_CONTENTS[axis]}
     </Container>
