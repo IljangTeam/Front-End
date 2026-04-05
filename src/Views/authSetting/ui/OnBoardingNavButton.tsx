@@ -19,13 +19,15 @@ export default function OnBoardingNavButton({
   return (
     <>
       {direction === "next" && (
-        <NextContainer state={state} onClick={onClick}>
+        <NextContainer type="button" state={state} onClick={onClick}>
           <ArrowRightIcon />
           다음
         </NextContainer>
       )}
       {direction === "prev" && (
-        <PrevContainer onClick={onClick}>이전</PrevContainer>
+        <PrevContainer type="button" onClick={onClick}>
+          이전
+        </PrevContainer>
       )}
     </>
   );
