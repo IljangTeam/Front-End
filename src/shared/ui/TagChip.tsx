@@ -19,7 +19,13 @@ interface TagChipProps {
 
 export default function TagChip({ axis, state, content }: TagChipProps) {
   return (
-    <Container axis={axis} state={state}>
+    <Container
+      type="button"
+      axis={axis}
+      state={state}
+      disabled={state === "disabled"} // HTML5 표준 비활성화 처리. focus 불가능 처리.
+      aria-disabled={state === "disabled"} // 스크린 리더에게 해당 요소 비활성화 됨 전달.
+    >
       {/* #{Temp_TagChipContents[axis]} */}# {content}
     </Container>
   );
