@@ -17,7 +17,13 @@ export default function AuthSettingView() {
     useSettingStep();
 
   return (
-    <div className="flex flex-col justify-center items-center h-screen px-[460px] gap-8">
+    <div
+      className="
+    flex flex-col justify-center items-center 
+    h-screen px-[460px] gap-8
+    bg-(--color-bg-default)
+    "
+    >
       <StepBar currentStep={STEP_NUMBER[currentStep]} totalSteps={3} />
       <SettingForm
         axis={currentStep}
