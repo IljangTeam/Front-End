@@ -2,10 +2,10 @@ import StepTag from "./StepTag";
 import Header from "./Header";
 import TagWrapper from "./TagWrapper";
 import OnBoardingNavButton from "./OnBoardingNavButton";
-import { TAG_AXIS } from "@/shared/types/SettingTagType";
+import { TAG_CATEGORY } from "@/shared/types/SettingTagType";
 
 interface SettingFormProps {
-  axis: TAG_AXIS;
+  axis: TAG_CATEGORY;
   onClickPrev: () => void;
   onClickNext: () => void;
 }

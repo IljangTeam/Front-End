@@ -1,8 +1,8 @@
 import TagChip from "@/shared/ui/TagChip";
-import { TAG_AXIS } from "@/shared/types/SettingTagType";
+import { TAG_CATEGORY } from "@/shared/types/SettingTagType";
 
 interface TagWrapper {
-  axis: TAG_AXIS;
+  axis: TAG_CATEGORY;
 }
 
 const TEMP_CONTENTS = {

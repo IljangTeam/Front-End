@@ -2,10 +2,10 @@
 
 import { css } from "@emotion/react";
 import styled from "@emotion/styled";
-import { TAG_AXIS } from "../types/SettingTagType";
+import { TAG_CATEGORY } from "../types/SettingTagType";
 
 interface TagChipProps {
-  axis: TAG_AXIS;
+  axis: TAG_CATEGORY;
   state: "default" | "selected" | "disabled";
   content: string;
 }

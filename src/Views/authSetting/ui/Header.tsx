@@ -1,7 +1,7 @@
-import { TAG_AXIS } from "@/shared/types/SettingTagType";
+import { TAG_CATEGORY } from "@/shared/types/SettingTagType";
 
 interface HeaderProps {
-  axis: TAG_AXIS;
+  axis: TAG_CATEGORY;
 }
 
 const ESSENTIAL_MESSAGE: string = `최소 1개 선택 필수`;

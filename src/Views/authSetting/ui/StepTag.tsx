@@ -3,10 +3,10 @@
 import styled from "@emotion/styled";
 import { axisColors } from "@/shared/ui";
 import { LocationIcon, TimeIcon, GoalIcon } from "@/shared/assets/icons";
-import { TAG_AXIS } from "@/shared/types/SettingTagType";
+import { TAG_CATEGORY } from "@/shared/types/SettingTagType";
 
 interface StepTagProps {
-  axis: TAG_AXIS;
+  axis: TAG_CATEGORY;
 }
 
 const TAG_CONTENTS = {
