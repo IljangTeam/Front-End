@@ -33,9 +33,9 @@ export default function SignupView() {
       {/* auth input, submit wrapper */}
       <form
         onSubmit={handleSubmit}
-        className="flex flex-col justify-between items-center min-w-full gap-[24px]"
+        className="flex flex-col justify-between items-center min-w-full gap-6"
       >
-        <div className="flex flex-col items-center w-full h-full gap-[12px]">
+        <div className="flex flex-col items-center w-full h-full gap-3">
           <LoginInput
             title="이름"
             placeholder="홍길동"
@@ -73,7 +73,7 @@ export default function SignupView() {
           />
         </div>
 
-        <div className="flex flex-col w-full gap-[12px]">
+        <div className="flex flex-col w-full gap-4">
           <SubmitButton contents="이메일로 가입하기" />
           <span className="text-[var(--color-text-tertiary)] font-['Pretendard_Variable'] text-center text-[11px] font-normal leading-[17.6px] underline">
             가입 시 각할모의 이용약관과 개인정보처리방침에 동의하는 것으로

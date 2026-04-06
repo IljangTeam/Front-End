@@ -26,7 +26,7 @@ export default function LoginView() {
     <div className="flex flex-col justify-center items-center min-w-[374.667px]">
       <form
         onSubmit={handleSubmit}
-        className="flex flex-col justify-between items-center min-w-full gap-[14px]"
+        className="flex flex-col justify-between items-center min-w-full gap-3"
       >
         <LoginInput
           title="이메일"

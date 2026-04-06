@@ -22,7 +22,7 @@ export default function AuthView() {
   return (
     <div className="flex justify-center items-center w-screen h-screen bg-[var(--color-bg-default)] p-[224px_115px]">
       {/* 로그인 및 회원가입 컴포넌트 */}
-      <div className="flex flex-row justify-between items-stretch min-h-full p-[32px] gap-[32px] bg-white rounded-3xl shadow-[0_2px_16px_0_rgba(0,0,0,0.06)]">
+      <div className="flex flex-row justify-between items-stretch min-h-full p-8 gap-8 bg-white rounded-3xl shadow-[0_2px_16px_0_rgba(0,0,0,0.06)]">
         {/* =========== 좌측 이미지 =========== */}
         <LeftImage />
 

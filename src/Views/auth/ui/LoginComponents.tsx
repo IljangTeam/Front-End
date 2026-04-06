@@ -26,7 +26,7 @@ export function AuthInputComponent({
   value,
 }: AuthInputComponentProps) {
   return (
-    <div className="flex flex-col justify-between items-left min-w-full gap-[4px]">
+    <div className="flex flex-col justify-between items-left min-w-full gap-1">
       <BodyBold>{title}</BodyBold>
       <AuthInput
         placeholder={placeholder}
@@ -99,7 +99,7 @@ const Typo = styled.span<{ state: boolean }>`
 
 const OrBar = () => {
   return (
-    <div className="flex flex-row items-center justify-between min-w-full whitespace-nowrap gap-[12px] text-[var(--palette-gray-300)]">
+    <div className="flex flex-row items-center justify-between min-w-full whitespace-nowrap gap-3 text-[var(--palette-gray-300)]">
       <BarLine />
       <Label>또는</Label>
       <BarLine />
@@ -116,7 +116,7 @@ const BarLine = styled.div`
 
 export function AuthMethod({ state, onToggle }: AuthMethodProps) {
   return (
-    <div className="flex flex-col justify-between items-center gap-[28px]">
+    <div className="flex flex-col justify-between items-center gap-7">
       <Container>
         <SliderIndicator active={state === "signup"} />
         <ToggleButton onClick={() => onToggle("login")}>
@@ -152,7 +152,12 @@ function AuthInput({
 }: AuthInputProps) {
   return (
     <AuthInputWrapper>
-      <StyledInput placeholder={placeholder} type={type} onChange={onChange} value={value} />
+      <StyledInput
+        placeholder={placeholder}
+        type={type}
+        onChange={onChange}
+        value={value}
+      />
       {suffix && <SuffixContainer>{suffix}</SuffixContainer>}
     </AuthInputWrapper>
   );
