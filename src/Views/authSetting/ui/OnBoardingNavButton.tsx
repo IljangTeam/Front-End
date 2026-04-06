@@ -58,7 +58,7 @@ const NextContainer = styled.button<{
       ? selected_color
       : `background: var(--color-status-neutral);`}
 
-  &:hover, &:active, &:focus {
+  &:hover, &:active {
     ${selected_color}
   }
 `;
