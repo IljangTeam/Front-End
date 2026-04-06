@@ -1,11 +1,11 @@
 "use client";
 import { useState } from "react";
-import { TAG_AXIS } from "@/shared/types/SettingTagType";
+import { TAG_CATEGORY } from "@/shared/types/SettingTagType";
 
 export function useSettingStep() {
-  const [currentStep, setCurrentStep] = useState<TAG_AXIS>("location");
+  const [currentStep, setCurrentStep] = useState<TAG_CATEGORY>("location");
 
-  const handleClickNextButton = (step: TAG_AXIS) => {
+  const handleClickNextButton = (step: TAG_CATEGORY) => {
     if (step === "location") {
       setCurrentStep("time");
     }
@@ -15,7 +15,7 @@ export function useSettingStep() {
     return;
   };
 
-  const handleClickPrevButton = (step: TAG_AXIS) => {
+  const handleClickPrevButton = (step: TAG_CATEGORY) => {
     if (step === "time") {
       setCurrentStep("location");
     }

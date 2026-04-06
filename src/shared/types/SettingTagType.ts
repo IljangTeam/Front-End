@@ -1,1 +1,2 @@
-export type TAG_AXIS = "location" | "time" | "goal";
+// axis 타입
+export type TAG_CATEGORY = "location" | "time" | "goal";

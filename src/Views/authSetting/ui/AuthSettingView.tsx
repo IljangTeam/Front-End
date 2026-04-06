@@ -4,9 +4,9 @@ import StepBar from "./StepBar";
 import MyTagWrapper from "./MyTagWrapper";
 
 import { useSettingStep } from "../model/useSettingStep";
-import { TAG_AXIS } from "@/shared/types/SettingTagType";
+import { TAG_CATEGORY } from "@/shared/types/SettingTagType";
 
-const STEP_NUMBER: Record<TAG_AXIS, 1 | 2 | 3> = {
+const STEP_NUMBER: Record<TAG_CATEGORY, 1 | 2 | 3> = {
   location: 1,
   time: 2,
   goal: 3,
