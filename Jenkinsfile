@@ -17,8 +17,10 @@ pipeline {
                 script {
                     if (env.BRANCH_NAME == 'main') {
                         env.TARGET_ENV = 'prod'
+                        env.GITOPS_DEPLOY_PATH = 'apps/gakhalmo-front/base/deployment.yaml'
                     } else if (env.BRANCH_NAME == 'develop') {
                         env.TARGET_ENV = 'dev'
+                        env.GITOPS_DEPLOY_PATH = 'apps/gakhalmo-front-dev/base/deployment.yaml'
                     } else {
                         error "Branch ${env.BRANCH_NAME} is not configured for deployment"
                     }
@@ -58,13 +60,13 @@ pipeline {
                         git clone https://\${GIT_USER}:\${GIT_TOKEN}@github.com/leestana01/gitops.git gitops-repo
                         cd gitops-repo
 
-                        sed -i "s|image: ${OCIR_REGISTRY}/${OCIR_NAMESPACE}/${IMAGE_NAME}:.*|image: ${env.FULL_IMAGE}|" apps/gakhalmo-front/deployment.yaml
+                        sed -i "s|image: ${OCIR_REGISTRY}/${OCIR_NAMESPACE}/${IMAGE_NAME}:.*|image: ${env.FULL_IMAGE}|" ${env.GITOPS_DEPLOY_PATH}
 
                         git config user.email "jenkins@klr.kr"
                         git config user.name "Jenkins CI"
-                        git add apps/gakhalmo-front/deployment.yaml
+                        git add ${env.GITOPS_DEPLOY_PATH}
                         git commit -m "chore: Update ${IMAGE_NAME} to ${env.IMAGE_TAG}" || echo "No changes to commit"
-                        git push origin HEAD:develop
+                        git push origin HEAD:main
                     """
                 }
             }
