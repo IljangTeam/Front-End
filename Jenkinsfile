@@ -17,10 +17,10 @@ pipeline {
                 script {
                     if (env.BRANCH_NAME == 'main') {
                         env.TARGET_ENV = 'prod'
-                        env.GITOPS_KUSTOMIZE_DIR = 'apps/gakhalmo-front/kustomize/prod'
+                        env.GITOPS_KUSTOMIZE_DIR = 'apps/gakhalmo-front/overlays/prod'
                     } else if (env.BRANCH_NAME == 'develop') {
                         env.TARGET_ENV = 'dev'
-                        env.GITOPS_KUSTOMIZE_DIR = 'apps/gakhalmo-front/kustomize/dev'
+                        env.GITOPS_KUSTOMIZE_DIR = 'apps/gakhalmo-front/overlays/dev'
                     } else {
                         error "Branch ${env.BRANCH_NAME} is not configured for deployment"
                     }
