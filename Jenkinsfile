@@ -53,21 +53,27 @@ pipeline {
         }
 
         stage('Update GitOps Repository') {
-            agent any
+            agent {
+                kubernetes {
+                    label 'kaniko'
+                }
+            }
             steps {
-                withCredentials([usernamePassword(credentialsId: "${GITOPS_CREDENTIALS}", usernameVariable: 'GIT_USER', passwordVariable: 'GIT_TOKEN')]) {
-                    sh """
-                        git clone https://\${GIT_USER}:\${GIT_TOKEN}@github.com/leestana01/gitops.git gitops-repo
-                        cd gitops-repo
+                container('jnlp') {
+                    withCredentials([usernamePassword(credentialsId: "${GITOPS_CREDENTIALS}", usernameVariable: 'GIT_USER', passwordVariable: 'GIT_TOKEN')]) {
+                        sh """
+                            git clone https://\${GIT_USER}:\${GIT_TOKEN}@github.com/leestana01/gitops.git gitops-repo
+                            cd gitops-repo
 
-                        sed -i "s|newTag:.*|newTag: ${env.IMAGE_TAG}|" ${env.GITOPS_KUSTOMIZE_DIR}/kustomization.yaml
+                            sed -i "s|newTag:.*|newTag: ${env.IMAGE_TAG}|" ${env.GITOPS_KUSTOMIZE_DIR}/kustomization.yaml
 
-                        git config user.email "jenkins@klr.kr"
-                        git config user.name "Jenkins CI"
-                        git add ${env.GITOPS_KUSTOMIZE_DIR}/kustomization.yaml
-                        git commit -m "chore: Update ${IMAGE_NAME} to ${env.IMAGE_TAG}" || echo "No changes to commit"
-                        git push origin HEAD:main
-                    """
+                            git config user.email "jenkins@klr.kr"
+                            git config user.name "Jenkins CI"
+                            git add ${env.GITOPS_KUSTOMIZE_DIR}/kustomization.yaml
+                            git commit -m "update ${IMAGE_NAME} to ${env.IMAGE_TAG}" || echo "No changes to commit"
+                            git push origin HEAD:main
+                        """
+                    }
                 }
             }
         }
