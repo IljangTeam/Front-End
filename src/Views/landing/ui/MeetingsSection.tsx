@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowRight } from "@/shared/ui/icons";
+import { ArrowRightIcon } from "@/shared/assets/icons";
 import { motion } from "framer-motion";
 import MeetingCard from "./MeetingCard";
 import type { MeetingCardProps } from "./MeetingCard";
@@ -77,7 +77,7 @@ export default function MeetingsSection() {
           className="flex items-center gap-1 text-body text-(--color-text-secondary) animate-pulse"
         >
           전체 보기
-          <ArrowRight size={14} />
+          <ArrowRightIcon width={14} height={14} />
         </Link>
       </div>
 
