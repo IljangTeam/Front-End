@@ -4,6 +4,7 @@ export { default as TimeIcon } from "./Time.svg";
 export { default as GoalIcon } from "./Goal.svg";
 export { default as ArrowRightIcon } from "./ArrowRight.svg";
 export { default as CheckIcon } from "./Check.svg";
+export { default as ArrowNarrowRightIcon } from "./ArrowNarrowRight.svg";
 export { default as TagIcon } from "./Tag.svg";
 export { default as ClockIcon } from "./Clock.svg";
 export { default as FlagIcon } from "./Flag.svg";
