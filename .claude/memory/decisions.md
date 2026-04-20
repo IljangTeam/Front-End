@@ -1,93 +1,68 @@
 # Architectural Decision Records (ADR)
 
-큰 아키텍처/설계 결정을 기록한다. 에이전트는 **읽기만** 한다. 새 ADR은 사람이 작성하고 PR로 제출한다 (`memory-curator`는 제안만).
-
-## 포맷
-
-각 ADR은 아래 템플릿을 따른다:
-
-```markdown
-## ADR-XXX: <제목>
-- **Status**: proposed | accepted | deprecated | superseded-by ADR-YYY
-- **Date**: YYYY-MM-DD
-- **Authors**: <이름들>
-
-### Context
-<문제 배경 — 왜 결정이 필요했나>
-
-### Decision
-<무엇을 결정했는가>
-
-### Alternatives Considered
-- **A**: 설명 + 선택하지 않은 이유
-- **B**: 설명 + 선택하지 않은 이유
-
-### Consequences
-- Positive: ...
-- Negative: ...
-- Migration: <기존 코드에 대한 영향과 이행 계획>
-
-### Related
-- LESSON-XXX, PATTERN-XXX
-```
+큰 아키텍처/설계 결정을 기록한다.
 
 ---
 
-## 예시 시드 ADR
-
-## ADR-001: 도메인 레이어의 에러 전달 방식
+## ADR-001: FSD(Feature-Sliced Design) 레이어 구조 채택
 - **Status**: accepted
 - **Date**: seed
 - **Authors**: 팀
 
 ### Context
-도메인 로직에서 발생하는 실패(예: 유효성 오류, 도메인 규칙 위반)가 예외로 던져지면 상위 레이어에서 놓치거나 변환 비용이 크다.
+페이지, 비즈니스 로직, 공통 유틸이 뒤섞이면 파일 간 의존성 파악이 어려워진다.
 
 ### Decision
-도메인 레이어 함수는 `Result<T, DomainError>` 타입을 반환한다. 인프라 레이어(DB, 외부 API)는 예외를 던질 수 있지만 반드시 어댑터에서 `Result`로 변환한다.
+`app/` (라우팅) → `Views/` (피처 모듈) → `shared/` (공통) 3레이어 구조를 사용한다. `app/`은 View import만 하는 얇은 래퍼. 각 View는 `ui/`, `model/`, `index.ts` 배럴 구조.
 
 ### Alternatives Considered
-- **예외 기반**: 간단하지만 타입 시스템이 실패 경로를 드러내지 않음.
-- **콜백 기반**: 중첩 증가.
+- **pages 디렉토리에 로직 직접 배치**: 간단하지만 피처 간 경계가 없음.
+- **Atomic Design**: 컴포넌트 분류 기준이 모호.
 
 ### Consequences
-- Positive: 타입 체커가 실패 처리 누락을 감지.
-- Negative: 보일러플레이트 증가, `Result` 유틸리티 필요.
-- Migration: 신규 코드부터 적용. 기존 코드는 건드리는 PR에서 점진 변환.
-
-### Related
-- CONV-002, LESSON-001
+- Positive: 피처 단위 독립성, 배럴 export로 공개 API 명확.
+- Negative: 디렉토리 깊이 증가.
 
 ---
 
-## ADR-002: 배포 단위
+## ADR-002: Tailwind CSS 4 + Emotion 공존
 - **Status**: accepted
 - **Date**: seed
+- **Authors**: 팀
 
 ### Context
-서비스가 한 모놀리스로 배포되면서 사소한 변경에도 전체 배포가 필요했다.
+정적 스타일은 유틸리티 클래스가 빠르고, 상태 기반 동적 스타일은 CSS-in-JS가 표현력이 좋다.
 
 ### Decision
-도메인 경계로 서비스를 분리하되, 공통 컴포넌트(인증, 로깅, 공통 유틸)는 모놀리스에 남긴다. 새 도메인은 분리된 서비스로 시작.
+Tailwind CSS 4를 레이아웃/정적 스타일에, Emotion을 hover/active 등 상태 기반 동적 스타일에 사용한다. EmotionCacheProvider로 두 시스템 공존. Emotion 클래스 prefix는 `em`.
 
 ### Alternatives Considered
-- 전체 마이크로서비스화 — 운영 비용 과다.
-- 현상 유지 — 배포 병목 지속.
+- **Tailwind only**: `group-hover`, arbitrary variants 등으로 복잡한 상태 표현 시 클래스가 폭발.
+- **Emotion only**: 레이아웃 유틸리티 재작성 필요.
 
 ### Consequences
-- Positive: 독립 배포, 장애 격리.
-- Negative: 서비스 간 계약 관리 필요.
-- Migration: 신규 도메인만 분리. 기존 도메인은 필요 시점에 분리 검토.
-
-### Related
-- CONV-006
+- Positive: 각 시스템의 강점 활용.
+- Negative: 두 시스템의 우선순위 이해 필요 (Emotion unlayered > Tailwind @layer).
+- Related: CONV-001
 
 ---
 
-## ADR 작성 트리거
+## ADR-003: SVGR을 통한 아이콘 관리
+- **Status**: accepted
+- **Date**: 2026-04-20
+- **Authors**: 팀
 
-`memory-curator`가 다음을 감지하면 ADR 작성을 제안한다:
+### Context
+hand-coded 아이콘 컴포넌트는 SVG 추가/수정 시 JSX 변환 작업이 필요하고, Figma에서 SVG를 바로 export해서 쓸 수 없다.
 
-- 동일 영역에서 서로 모순되는 컨벤션이 2개 이상 등록됨
-- 같은 설계 결정을 놓고 여러 PR에서 반복 토론
-- 기존 ADR에 충돌하는 구현이 머지됨
+### Decision
+`@svgr/webpack`을 turbopack에 설정하고, SVG 파일을 직접 import하여 React 컴포넌트로 사용한다. SVG 파일은 `shared/assets/icons/`에 viewBox만 유지.
+
+### Alternatives Considered
+- **hand-coded 컴포넌트**: 유지보수 비용 높음, SVGR 전환 과정에서 크기 불일치 문제 발생.
+- **아이콘 폰트**: 색상 제어 제한, 번들 사이즈 비효율.
+
+### Consequences
+- Positive: Figma export → 바로 사용 가능. 크기는 CSS로 일관 제어.
+- Negative: SVGR 빌드 의존성 추가.
+- Related: CONV-004, CONV-005
