@@ -38,8 +38,10 @@ function MetaRow({
   return (
     <div className="flex items-center gap-4 py-1">
       <div className="flex items-center gap-2">
-        <Icon width={16} height={16} className="text-(--color-text-secondary)" aria-hidden="true" />
-        <span className="text-body text-(--color-text-secondary)">
+        <div className="size-4 shrink-0 overflow-hidden" aria-hidden="true">
+          <Icon className="block size-full text-(--color-text-secondary)" />
+        </div>
+        <span className="text-body-small text-(--color-text-secondary)">
           {label}
         </span>
       </div>
