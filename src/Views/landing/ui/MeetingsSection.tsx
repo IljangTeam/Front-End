@@ -77,7 +77,7 @@ export default function MeetingsSection() {
           className="flex items-center gap-2.5 rounded-xl py-2 pr-2 pl-4 text-label-large text-(--color-text-secondary) hover:text-(--color-text-accent)"
         >
           모임 더 보기
-          <div className="size-4 shrink-0 overflow-hidden">
+          <div className="size-4 shrink-0 overflow-hidden" aria-hidden="true">
             <ArrowNarrowRightIcon className="block size-full" />
           </div>
 
