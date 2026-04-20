@@ -20,19 +20,19 @@ export default function AuthView() {
   const { mode, setMode, isLogin } = useAuthMode();
 
   return (
-    <div className="flex justify-center items-center w-screen h-screen bg-[var(--color-bg-default)] p-[224px_115px]">
+    <div className="flex justify-center items-center w-screen h-screen bg-(--color-bg-default) p-[224px_115px]">
       {/* 로그인 및 회원가입 컴포넌트 */}
       <div className="flex flex-row justify-between items-stretch min-h-full p-8 gap-8 bg-white rounded-3xl shadow-[0_2px_16px_0_rgba(0,0,0,0.06)]">
         {/* =========== 좌측 이미지 =========== */}
         <LeftImage />
 
         {/* =========== loginForm / 우측 로그인 폼 =========== */}
-        <div className="flex flex-col justify-between items-stretch min-w-[374.667px] w-full h-full">
+        <div className="flex flex-col justify-between items-stretch min-w-[374.667px] w-full min-h-151.5 h-full">
           {/* 로그인/회원가입 선택 토글*/}
           <AuthMethod state={mode} onToggle={setMode} />
 
           {/* 뷰 분기점 */}
-          <div className="flex flex-col flex-1 min-w-full">
+          <div className="flex flex-col justify-end items-center min-w-full h-full">
             {isLogin ? <LoginView /> : <SignupView />}
           </div>
         </div>
