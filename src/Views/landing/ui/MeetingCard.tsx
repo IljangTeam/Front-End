@@ -1,12 +1,10 @@
-import type { ComponentType, ReactNode } from "react";
-import type { IconProps } from "@/shared/ui/icons";
-import { Tag, Clock, Flag, Users } from "@/shared/ui/icons";
-
-type TagCategory = "location" | "time" | "goal";
+import type { ComponentType, ReactNode, SVGProps } from "react";
+import type { TAG_CATEGORY } from "@/shared/types/SettingTagType";
+import { TagIcon, ClockIcon, FlagIcon, UsersIcon } from "@/shared/assets/icons";
 
 interface TagItem {
   label: string;
-  category: TagCategory;
+  category: TAG_CATEGORY;
 }
 
 export interface MeetingCardProps {
@@ -21,7 +19,7 @@ export interface MeetingCardProps {
   hostInitial: string;
 }
 
-const TAG_CATEGORY_STYLES: Record<TagCategory, string> = {
+const TAG_CATEGORY_STYLES: Record<TAG_CATEGORY, string> = {
   location:
     "bg-(--color-tag-location-bg) text-(--color-tag-location)",
   time: "bg-(--color-tag-time-bg) text-(--color-tag-time)",
@@ -33,15 +31,17 @@ function MetaRow({
   label,
   children,
 }: {
-  icon: ComponentType<IconProps>;
+  icon: ComponentType<SVGProps<SVGSVGElement>>;
   label: string;
   children: ReactNode;
 }) {
   return (
     <div className="flex items-center gap-4 py-1">
       <div className="flex items-center gap-2">
-        <Icon size={16} className="text-(--color-text-secondary)" aria-hidden="true" />
-        <span className="text-body text-(--color-text-secondary)">
+        <div className="size-4 shrink-0 overflow-hidden" aria-hidden="true">
+          <Icon className="block size-full text-(--color-text-secondary)" />
+        </div>
+        <span className="text-body-small text-(--color-text-secondary)">
           {label}
         </span>
       </div>
@@ -50,7 +50,7 @@ function MetaRow({
   );
 }
 
-function TagChip({ category, children }: { category: TagCategory; children: ReactNode }) {
+function TagChip({ category, children }: { category: TAG_CATEGORY; children: ReactNode }) {
   return (
     <span
       className={`rounded-full px-2 py-1 text-label font-semibold ${TAG_CATEGORY_STYLES[category]}`}
@@ -109,7 +109,7 @@ export default function MeetingCard({
       <div className="flex flex-col gap-2 rounded-xl border border-(--color-border-default) bg-(--color-surface-default) px-4.25 pt-4.25 pb-3.25">
         {/* 메타 정보 */}
         <div className="flex flex-col gap-1">
-          <MetaRow icon={Tag} label="태그">
+          <MetaRow icon={TagIcon} label="태그">
             <div className="flex items-center gap-1">
               {tags.map((tag) => (
                 <TagChip key={`${tag.category}-${tag.label}`} category={tag.category}>
@@ -119,19 +119,19 @@ export default function MeetingCard({
             </div>
           </MetaRow>
 
-          <MetaRow icon={Clock} label="일시">
+          <MetaRow icon={ClockIcon} label="일시">
             <span className="text-body text-(--color-text-primary)">
               {date}
             </span>
           </MetaRow>
 
-          <MetaRow icon={Flag} label="장소">
+          <MetaRow icon={FlagIcon} label="장소">
             <span className="text-body text-(--color-text-primary)">
               {location}
             </span>
           </MetaRow>
 
-          <MetaRow icon={Users} label="인원">
+          <MetaRow icon={UsersIcon} label="인원">
             <div className="flex items-center gap-1">
               <span className="text-body text-(--color-text-primary)">
                 {currentMembers}/{maxMembers}명

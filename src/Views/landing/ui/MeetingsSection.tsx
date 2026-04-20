@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowRight } from "@/shared/ui/icons";
+import { ArrowNarrowRightIcon } from "@/shared/assets/icons";
 import { motion } from "framer-motion";
 import MeetingCard from "./MeetingCard";
 import type { MeetingCardProps } from "./MeetingCard";
@@ -74,15 +74,18 @@ export default function MeetingsSection() {
         </div>
         <Link
           href="/feed"
-          className="flex items-center gap-1 text-body text-(--color-text-secondary) animate-pulse"
+          className="flex items-center gap-2.5 rounded-xl py-2 pr-2 pl-4 text-label-large text-(--color-text-secondary) hover:text-(--color-text-accent)"
         >
-          전체 보기
-          <ArrowRight size={14} />
+          모임 더 보기
+          <div className="size-4 shrink-0 overflow-hidden" aria-hidden="true">
+            <ArrowNarrowRightIcon className="block size-full" />
+          </div>
+
         </Link>
       </div>
 
       {/* 카드 그리드 — 차례대로 위로 올라오는 stagger */}
-      <div className="grid grid-cols-3 gap-5">
+      <div className="grid grid-cols-2 gap-5 lg:grid-cols-3">
         {MOCK_MEETINGS.map((meeting, i) => (
           <motion.div
             key={`${meeting.title}-${meeting.round}`}
@@ -94,6 +97,7 @@ export default function MeetingsSection() {
               delay: i * 0.15,
               ease: [0.25, 0.1, 0.25, 1],
             }}
+            className={i === MOCK_MEETINGS.length - 1 ? "hidden lg:block" : ""}
           >
             <div className="transition-transform duration-200 hover:-translate-y-0.75">
               <MeetingCard {...meeting} />

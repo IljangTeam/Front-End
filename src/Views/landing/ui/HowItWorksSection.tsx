@@ -1,38 +1,37 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Tag, Zap, Link, Pen } from "@/shared/ui/icons";
-import type { ComponentType } from "react";
-import type { IconProps } from "@/shared/ui/icons";
+import { TagIcon, ZapIcon, LinkIcon, PenIcon } from "@/shared/assets/icons";
+import type { ComponentType, SVGProps } from "react";
 
 const STEPS: {
-  Icon: ComponentType<IconProps>;
+  Icon: ComponentType<SVGProps<SVGSVGElement>>;
   step: string;
   title: string;
   description: string;
 }[] = [
   {
-    Icon: Tag,
+    Icon: TagIcon,
     step: "STEP 01",
     title: "태그 설정",
     description:
       "지역 · 시간 · 목표 태그를 설정하면 나에게 맞는 모임이 자동으로 보여요.",
   },
   {
-    Icon: Zap,
+    Icon: ZapIcon,
     step: "STEP 02",
     title: "모임 찾기 · 개설",
     description: "태그 기반 피드에서 모임을 찾거나,\n직접 모임을 열 수 있어요.",
   },
   {
-    Icon: Link,
+    Icon: LinkIcon,
     step: "STEP 03",
     title: "각자 작업",
     description:
       "같은 공간에서 각자 집중해요.\n방해 없이, 혼자보다 훨씬 잘돼요.",
   },
   {
-    Icon: Pen,
+    Icon: PenIcon,
     step: "STEP 04",
     title: "회고",
     description:
@@ -69,7 +68,9 @@ export default function HowItWorksSection() {
             >
               {/* 아이콘 */}
               <div className="flex size-14 items-center justify-center rounded-2xl bg-(--color-surface-default)">
-                <step.Icon size={22} />
+                <div className="size-5.5 overflow-hidden">
+                  <step.Icon className="block size-full" />
+                </div>
               </div>
 
               {/* STEP 라벨 */}
