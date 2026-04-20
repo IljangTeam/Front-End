@@ -1,12 +1,11 @@
 import type { ComponentType, ReactNode } from "react";
 import type { IconProps } from "@/shared/ui/icons";
+import type { TAG_CATEGORY } from "@/shared/types/SettingTagType";
 import { Tag, Clock, Flag, Users } from "@/shared/ui/icons";
-
-type TagCategory = "location" | "time" | "goal";
 
 interface TagItem {
   label: string;
-  category: TagCategory;
+  category: TAG_CATEGORY;
 }
 
 export interface MeetingCardProps {
@@ -21,7 +20,7 @@ export interface MeetingCardProps {
   hostInitial: string;
 }
 
-const TAG_CATEGORY_STYLES: Record<TagCategory, string> = {
+const TAG_CATEGORY_STYLES: Record<TAG_CATEGORY, string> = {
   location:
     "bg-(--color-tag-location-bg) text-(--color-tag-location)",
   time: "bg-(--color-tag-time-bg) text-(--color-tag-time)",
@@ -50,7 +49,7 @@ function MetaRow({
   );
 }
 
-function TagChip({ category, children }: { category: TagCategory; children: ReactNode }) {
+function TagChip({ category, children }: { category: TAG_CATEGORY; children: ReactNode }) {
   return (
     <span
       className={`rounded-full px-2 py-1 text-label font-semibold ${TAG_CATEGORY_STYLES[category]}`}

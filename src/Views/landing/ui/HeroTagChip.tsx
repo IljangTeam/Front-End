@@ -2,21 +2,20 @@
 
 import { useEffect, useState, useCallback } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-
-type TagType = "time" | "location" | "goal";
+import type { TAG_CATEGORY } from "@/shared/types/SettingTagType";
 
 interface HeroTagChipProps {
-  type: TagType;
+  type: TAG_CATEGORY;
 }
 
-const TAG_VALUES: Record<TagType, string[]> = {
+const TAG_VALUES: Record<TAG_CATEGORY, string[]> = {
   time: ["# 아침", "# 점심", "# 저녁", "# 새벽"],
   location: ["# 홍대", "# 강남", "# 연남", "# 성수", "# 온라인"],
   goal: ["# 토익공부", "# 독서", "# 코딩", "# 운동", "# 드로잉"],
 };
 
 /** 설계서: 시간 2초 / 지역 2.7초 / 목표 3.4초 (비동기) */
-const INTERVALS: Record<TagType, number> = {
+const INTERVALS: Record<TAG_CATEGORY, number> = {
   time: 2000,
   location: 2700,
   goal: 3400,
@@ -24,7 +23,7 @@ const INTERVALS: Record<TagType, number> = {
 
 /** 축별 gradient border + bg 색상 (Figma 시안 기준) */
 const TAG_STYLES: Record<
-  TagType,
+  TAG_CATEGORY,
   { borderGradient: string; from: string; to: string; text: string; shadow: string }
 > = {
   time: {
