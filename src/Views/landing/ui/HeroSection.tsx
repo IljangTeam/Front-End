@@ -1,10 +1,10 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { ChevronRightIcon, SearchIcon } from "@/shared/assets/icons";
 import { useScroll, useTransform, motion } from "framer-motion";
 import HeroTagChip from "./HeroTagChip";
+import HeroBackground from "./HeroBackground";
 
 export default function HeroSection() {
   // 글로벌 scrollY — sticky 요소에서도 정확하게 동작
@@ -26,13 +26,7 @@ export default function HeroSection() {
         style={{ opacity: headlineOpacity }}
         className="pointer-events-none absolute inset-x-7.5 top-7 bottom-7 overflow-hidden rounded-4xl bg-(--color-bg-default)"
       >
-        <Image
-          src="/assets/img/landing-hero.png"
-          alt=""
-          fill
-          className="object-cover object-bottom"
-          priority
-        />
+        <HeroBackground />
       </motion.div>
 
       {/* 콘텐츠 */}
