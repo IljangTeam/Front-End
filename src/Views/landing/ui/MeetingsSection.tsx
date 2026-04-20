@@ -74,7 +74,7 @@ export default function MeetingsSection() {
         </div>
         <Link
           href="/feed"
-          className="flex items-center gap-2.5 rounded-xl py-2 pr-2 pl-4 text-label-large animate-pulse text-(--color-text-secondary)"
+          className="flex items-center gap-2.5 rounded-xl py-2 pr-2 pl-4 text-label-large text-(--color-text-secondary) hover:text-(--color-text-accent)"
         >
           모임 더 보기
           <div className="size-4 shrink-0 overflow-hidden">
