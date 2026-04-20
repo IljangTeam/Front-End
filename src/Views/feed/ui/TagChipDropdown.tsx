@@ -1,265 +1,188 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { css } from "@emotion/react";
+import { useEffect } from "react";
 import styled from "@emotion/styled";
+import { css } from "@emotion/react";
 import type { TAG_CATEGORY } from "@/shared/types/SettingTagType";
-import { ChevronDownIcon, ChevronUpIcon } from "@/shared/assets/icons";
+import { ChevronDownIcon, ChevronUpIcon, PlusIcon } from "@/shared/assets/icons";
 import { useChipDropdownState } from "../model/useChipDropdownState";
 
 const FILTER_DATA: Record<TAG_CATEGORY, { label: string; tags: string[] }> = {
   location: {
     label: "지역",
-    tags: ["홍대", "성수", "마포", "혜화", "구로", "신촌", "이대", "강남", "종로", "명동", "여의도"],
+    tags: [
+      "홍대", "성수", "마포", "혜화", "구로", "신촌",
+      "이대", "강남", "종로", "명동", "여의도",
+      "가리봉", "압구정", "부암동", "신사동", "청담동", "광명", "온라인", "용산", "건대", "합정", "상수", "연남", "성신여대", "동대문", "왕십리", "노원", "수유", "인천", "부산",
+    ],
   },
-  time: {
-    label: "시간",
-    tags: ["오전", "오후", "저녁", "밤"],
-  },
-  goal: {
-    label: "목표",
-    tags: ["독서", "작업", "공부", "취미"],
-  },
+  time: { label: "시간", tags: ["오전", "오후", "저녁", "밤", "새벽"] },
+  goal: { label: "목표", tags: ["독서", "작업", "공부", "취미"] },
 };
 
-const TAG_COLOR_STYLES: Record<TAG_CATEGORY, ReturnType<typeof css>> = {
-  location: css`
-    color: var(--color-tag-location);
-    background: var(--color-tag-location-bg);
-    box-shadow: inset 0 0 0 1.5px var(--color-tag-location);
-  `,
-  time: css`
-    color: var(--color-tag-time);
-    background: var(--color-tag-time-bg);
-    box-shadow: inset 0 0 0 1.5px var(--color-tag-time);
-  `,
-  goal: css`
-    color: var(--color-tag-goal);
-    background: var(--color-tag-goal-bg);
-    box-shadow: inset 0 0 0 1.5px var(--color-tag-goal);
-  `,
+const TAG_STYLES: Record<TAG_CATEGORY, { color: string; bg: string; border: string }> = {
+  location: { color: "var(--color-tag-location)", bg: "var(--color-tag-location-bg)", border: "var(--color-tag-location)" },
+  time: { color: "var(--color-tag-time)", bg: "var(--color-tag-time-bg)", border: "var(--color-tag-time)" },
+  goal: { color: "var(--color-tag-goal)", bg: "var(--color-tag-goal-bg)", border: "var(--color-tag-goal)" },
 };
 
-const FilterTag = styled.button<{ category: TAG_CATEGORY; isSelected: boolean }>`
+const FilterTag = styled.button<{ $category: TAG_CATEGORY; $selected: boolean }>`
   display: inline-flex;
   align-items: center;
-  padding: 4px 10px;
-  border-radius: 9999px;
+  padding: 4px 8px;
+  border-radius: 20px;
   font-size: 12px;
-  font-weight: 500;
+  font-weight: 600;
   white-space: nowrap;
   cursor: pointer;
-  border: none;
-  transition: box-shadow 0.1s;
+  line-height: 1.5;
 
-  ${({ category, isSelected }) =>
-    isSelected
-      ? TAG_COLOR_STYLES[category]
+  ${({ $category, $selected }) =>
+    $selected
+      ? css`
+          color: ${TAG_STYLES[$category].color};
+          background: ${TAG_STYLES[$category].bg};
+          border: 1.5px solid ${TAG_STYLES[$category].border};
+        `
       : css`
           color: var(--color-text-tertiary);
-          background: var(--color-surface-default);
+          background: var(--color-bg-default);
+          border: 1.5px solid transparent;
         `}
 `;
 
-type SelectedTags = Record<TAG_CATEGORY, Set<string>>;
-
 const CATEGORIES: TAG_CATEGORY[] = ["location", "time", "goal"];
 
-export default function TagChipDropdown() {
-  const { state, expand, showOverlay, collapse, shrink } = useChipDropdownState();
-  const [selectedTags, setSelectedTags] = useState<SelectedTags>({
-    location: new Set(),
-    time: new Set(),
-    goal: new Set(),
-  });
+interface TagChipDropdownProps {
+  selectedTags: Record<TAG_CATEGORY, Set<string>>;
+  onToggleTag: (category: TAG_CATEGORY, tag: string) => void;
+  onResetAll: () => void;
+}
 
-  const containerRef = useRef<HTMLDivElement>(null);
+export default function TagChipDropdown({ selectedTags, onToggleTag, onResetAll }: TagChipDropdownProps) {
+  const { isOpen, open, close, expandCategory, collapseCategory, isCategoryExpanded } =
+    useChipDropdownState();
 
-  const totalSelected = CATEGORIES.reduce(
-    (acc, cat) => acc + selectedTags[cat].size,
-    0,
-  );
-
-  const allSelectedTags = CATEGORIES.flatMap((cat) =>
+  const totalSelected = CATEGORIES.reduce((acc, cat) => acc + selectedTags[cat].size, 0);
+  const allSelectedChips = CATEGORIES.flatMap((cat) =>
     [...selectedTags[cat]].map((tag) => ({ tag, category: cat })),
   );
 
-  function toggleTag(category: TAG_CATEGORY, tag: string) {
-    setSelectedTags((prev) => {
-      const next = new Set(prev[category]);
-      if (next.has(tag)) {
-        next.delete(tag);
-      } else {
-        next.add(tag);
-      }
-      return { ...prev, [category]: next };
-    });
-  }
-
-  // ESC 키 → collapsed
+  // ESC → 닫기
   useEffect(() => {
-    if (state !== "overlay") return;
-
+    if (!isOpen) return;
     function handleKeyDown(e: KeyboardEvent) {
-      if (e.key === "Escape") {
-        collapse();
-      }
+      if (e.key === "Escape") close();
     }
-
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [state, collapse]);
+  }, [isOpen, close]);
 
-  const HIDDEN_THRESHOLD = 3;
-  const visibleTags = allSelectedTags.slice(0, HIDDEN_THRESHOLD);
-  const hiddenCount = allSelectedTags.length - HIDDEN_THRESHOLD;
-
-  if (state === "collapsed") {
-    return (
-      <div className="flex items-center gap-3 rounded-xl border border-(--color-border-default) bg-(--color-surface-default) px-5 py-4">
-        <span className="text-body-small text-(--color-text-secondary) shrink-0">
-          필터 {totalSelected}개 선택됨
+  return (
+    <div className="relative">
+      {/* ── collapsed bar ── */}
+      <div className="flex h-14 w-full items-center gap-2 overflow-hidden rounded-xl border border-(--color-border-default) bg-(--color-surface-default) px-5">
+        <span className="text-[11px] font-bold text-(--color-text-tertiary) shrink-0">
+          필터{totalSelected > 0 ? `  ${totalSelected}개 선택됨` : ""}
         </span>
 
-        {visibleTags.length > 0 && (
-          <div className="flex flex-wrap gap-1.5">
-            {visibleTags.map(({ tag, category }) => (
+        {allSelectedChips.length > 0 && (
+          <div className="flex items-center gap-3 min-w-0 overflow-hidden">
+            {allSelectedChips.map(({ tag, category }) => (
               <FilterTag
                 key={`${category}-${tag}`}
-                category={category}
-                isSelected
+                $category={category}
+                $selected
+                onClick={() => onToggleTag(category, tag)}
               >
-                #{tag}
+                {tag}
               </FilterTag>
             ))}
           </div>
         )}
 
-        <div className="ml-auto flex items-center gap-2">
-          {hiddenCount > 0 && (
+        <div className="ml-auto flex items-center gap-2 shrink-0">
+          {totalSelected > 0 && (
             <button
-              className="text-body-small text-(--color-text-accent) font-semibold"
-              onClick={showOverlay}
+              onClick={onResetAll}
+              className="text-[11px] text-(--color-text-tertiary) hover:text-(--color-text-secondary)"
             >
-              +{hiddenCount}
+              필터 초기화
             </button>
           )}
           <button
-            className="flex size-5 shrink-0 items-center justify-center"
-            onClick={expand}
-            aria-label="필터 펼치기"
+            onClick={isOpen ? close : open}
+            className="size-6 overflow-hidden"
+            aria-label={isOpen ? "필터 접기" : "필터 펼치기"}
           >
-            <div className="size-4 shrink-0 overflow-hidden" aria-hidden="true">
+            {isOpen ? (
+              <ChevronUpIcon className="block size-full text-(--color-text-secondary)" />
+            ) : (
               <ChevronDownIcon className="block size-full text-(--color-text-secondary)" />
-            </div>
+            )}
           </button>
         </div>
       </div>
-    );
-  }
 
-  if (state === "expanded") {
-    return (
-      <div className="flex flex-col gap-3 rounded-xl border border-(--color-border-default) bg-(--color-surface-default) px-5 py-4">
-        {CATEGORIES.map((cat) => (
-          <div key={cat} className="flex flex-col gap-2">
-            <span className="text-[11px] font-bold text-(--color-text-tertiary)">
-              {FILTER_DATA[cat].label}
-            </span>
-            <div className="flex flex-wrap gap-1.5">
-              {FILTER_DATA[cat].tags.map((tag) => (
-                <FilterTag
-                  key={tag}
-                  category={cat}
-                  isSelected={selectedTags[cat].has(tag)}
-                  onClick={() => toggleTag(cat, tag)}
-                >
-                  #{tag}
-                </FilterTag>
-              ))}
-            </div>
+      {/* ── 드롭다운 패널 (absolute로 아래 요소 위를 덮음) ── */}
+      {isOpen && (
+        <div
+          className="absolute left-0 right-0 top-full z-20 mt-1 rounded-xl border border-(--color-border-default) bg-(--color-surface-default) px-5 py-4 shadow-[0_0_16px_0_rgba(0,0,0,0.06)]"
+        >
+          <div className="flex flex-col gap-2">
+            {CATEGORIES.map((cat) => {
+              const tags = FILTER_DATA[cat].tags;
+              const expanded = isCategoryExpanded(cat);
+              // 첫 줄은 overflow-hidden + max-h로 1행만 보여줌, expanded시 전체 표시
+              const needsExpand = tags.length > 10;
+
+              return (
+                <div key={cat} className="flex items-start gap-3">
+                  <span className="text-[11px] font-bold text-(--color-text-tertiary) shrink-0 w-7 pt-1">
+                    {FILTER_DATA[cat].label}
+                  </span>
+
+                  <div
+                    className={`flex flex-1 flex-wrap items-center gap-3 ${
+                      !expanded && needsExpand ? "max-h-8 overflow-hidden" : ""
+                    }`}
+                  >
+                    {tags.map((tag) => (
+                      <FilterTag
+                        key={tag}
+                        $category={cat}
+                        $selected={selectedTags[cat].has(tag)}
+                        onClick={() => onToggleTag(cat, tag)}
+                      >
+                        {tag}
+                      </FilterTag>
+                    ))}
+                  </div>
+
+                  {needsExpand && (
+                    <button
+                      onClick={() => expanded ? collapseCategory(cat) : expandCategory(cat)}
+                      className="flex shrink-0 items-center gap-1 text-body-small text-(--color-text-secondary) whitespace-nowrap pt-0.5"
+                    >
+                      {expanded ? (
+                        <>닫기 <span>−</span></>
+                      ) : (
+                        <>
+                          <span>{tags.length - 10}</span>
+                          <div className="size-3 overflow-hidden" aria-hidden="true">
+                            <PlusIcon className="block size-full" />
+                          </div>
+                        </>
+                      )}
+                    </button>
+                  )}
+                </div>
+              );
+            })}
           </div>
-        ))}
 
-        <div className="flex justify-between pt-1">
-          {hiddenCount > 0 && (
-            <button
-              className="text-body-small text-(--color-text-accent) font-semibold"
-              onClick={showOverlay}
-            >
-              +{hiddenCount}개 더 보기
-            </button>
-          )}
-          <button
-            className="ml-auto flex items-center justify-center"
-            onClick={collapse}
-            aria-label="필터 접기"
-          >
-            <div className="size-4 shrink-0 overflow-hidden" aria-hidden="true">
-              <ChevronUpIcon className="block size-full text-(--color-text-secondary)" />
-            </div>
-          </button>
         </div>
-      </div>
-    );
-  }
-
-  // overlay 상태
-  return (
-    <>
-      {/* 스크림 */}
-      <div
-        className="fixed inset-0 z-10 bg-[#000]/10"
-        onClick={collapse}
-        aria-hidden="true"
-      />
-
-      {/* 드롭다운 패널 */}
-      <div
-        ref={containerRef}
-        role="dialog"
-        aria-modal="true"
-        aria-label="태그 필터"
-        className="relative z-20 flex flex-col gap-3 rounded-xl border border-(--color-border-default) bg-(--color-surface-default) px-5 py-4 shadow-[0_4px_24px_0_rgba(0,0,0,0.12)]"
-      >
-        {CATEGORIES.map((cat) => (
-          <div key={cat} className="flex flex-col gap-2">
-            <span className="text-[11px] font-bold text-(--color-text-tertiary)">
-              {FILTER_DATA[cat].label}
-            </span>
-            <div className="flex flex-wrap gap-1.5">
-              {FILTER_DATA[cat].tags.map((tag) => (
-                <FilterTag
-                  key={tag}
-                  category={cat}
-                  isSelected={selectedTags[cat].has(tag)}
-                  onClick={() => toggleTag(cat, tag)}
-                >
-                  #{tag}
-                </FilterTag>
-              ))}
-            </div>
-          </div>
-        ))}
-
-        <div className="flex justify-between pt-1">
-          <button
-            className="text-body-small text-(--color-text-accent) font-semibold"
-            onClick={shrink}
-          >
-            − 줄이기
-          </button>
-          <button
-            className="ml-auto flex items-center justify-center"
-            onClick={collapse}
-            aria-label="필터 접기"
-          >
-            <div className="size-4 shrink-0 overflow-hidden" aria-hidden="true">
-              <ChevronUpIcon className="block size-full text-(--color-text-secondary)" />
-            </div>
-          </button>
-        </div>
-      </div>
-    </>
+      )}
+    </div>
   );
 }

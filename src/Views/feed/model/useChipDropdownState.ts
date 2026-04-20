@@ -1,21 +1,31 @@
-import { useState } from "react";
-
-type ChipDropdownState = "collapsed" | "expanded" | "overlay";
+import { useState, useCallback } from "react";
 
 export function useChipDropdownState() {
-  const [state, setState] = useState<ChipDropdownState>("collapsed");
+  const [isOpen, setIsOpen] = useState(false);
+  const [expandedCategories, setExpandedCategories] = useState<Set<string>>(new Set());
 
-  // collapsed → expanded
-  const expand = () => setState("expanded");
+  const open = useCallback(() => setIsOpen(true), []);
+  const close = useCallback(() => {
+    setIsOpen(false);
+    setExpandedCategories(new Set());
+  }, []);
 
-  // expanded → overlay
-  const showOverlay = () => setState("overlay");
+  const expandCategory = useCallback((cat: string) => {
+    setExpandedCategories((prev) => new Set(prev).add(cat));
+  }, []);
 
-  // overlay → expanded
-  const shrink = () => setState("expanded");
+  const collapseCategory = useCallback((cat: string) => {
+    setExpandedCategories((prev) => {
+      const next = new Set(prev);
+      next.delete(cat);
+      return next;
+    });
+  }, []);
 
-  // overlay/expanded → collapsed
-  const collapse = () => setState("collapsed");
+  const isCategoryExpanded = useCallback(
+    (cat: string) => expandedCategories.has(cat),
+    [expandedCategories],
+  );
 
-  return { state, expand, showOverlay, collapse, shrink };
+  return { isOpen, open, close, expandCategory, collapseCategory, isCategoryExpanded };
 }
