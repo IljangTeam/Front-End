@@ -4,7 +4,7 @@ import Link from "next/link";
 import { ChevronRightIcon, SearchIcon } from "@/shared/assets/icons";
 import { useScroll, useTransform, motion } from "framer-motion";
 import HeroTagChip from "./HeroTagChip";
-import HeroBackground from "./HeroBackground";
+import HeroBackground from "@/Views/landing/ui/HeroBackground";
 
 export default function HeroSection() {
   // 글로벌 scrollY — sticky 요소에서도 정확하게 동작
