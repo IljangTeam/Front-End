@@ -13,14 +13,14 @@ const drift1 = keyframes`
 const drift2 = keyframes`
   0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.6; }
   25%      { transform: translate(-70px, -100px) scale(0.85); opacity: 0.75; }
-  50%      { transform: translate(90px, 50px) scale(1.15); opacity: 0.4; }
+  50%      { transform: translate(90px, 50px) scale(1.3); opacity: 0.4; }
   75%      { transform: translate(-30px, -130px) scale(0.9); opacity: 0.65; }
 `;
 
 const drift3 = keyframes`
   0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.9; }
   25%      { transform: translate(60px, -140px) scale(1.15); opacity: 0.8; }
-  50%      { transform: translate(-80px, 30px) scale(0.8); opacity: 0.45; }
+  50%      { transform: translate(-95px, 30px) scale(0.8); opacity: 0.45; }
   75%      { transform: translate(50px, -90px) scale(1.1); opacity: 0.7; }
 `;
 
@@ -28,7 +28,7 @@ const drift4 = keyframes`
   0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.9; }
   25%      { transform: translate(-60px, -110px) scale(1.2); opacity: 0.45; }
   50%      { transform: translate(70px, 40px) scale(0.8); opacity: 0.75; }
-  75%      { transform: translate(-40px, -70px) scale(1.15); opacity: 0.5; }
+  75%      { transform: translate(-40px, -150px) scale(1.15); opacity: 0.5; }
 `;
 
 const Orb = styled.div<{
@@ -88,7 +88,7 @@ export default function HeroBackground() {
         $bottom="-10%"
         $left="85%"
         $animation={drift4}
-        $duration={3}
+        $duration={9}
       />
     </div>
   );

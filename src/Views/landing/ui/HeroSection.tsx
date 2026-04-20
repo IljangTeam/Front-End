@@ -30,7 +30,7 @@ export default function HeroSection() {
       </motion.div>
 
       {/* 콘텐츠 */}
-      <div className="relative z-10 flex w-140 flex-col items-center gap-[3vh]">
+      <div className="relative z-10 flex w-full max-w-140 flex-col items-center gap-[3vh] px-8 lg:px-0">
         {/* 헤드라인 3행 */}
         <motion.div
           style={{
@@ -93,7 +93,7 @@ export default function HeroSection() {
       {/* 검색바 — 서브카피와 함께 사라짐 */}
       <motion.div
         style={{ opacity: bottomOpacity, y: bottomY }}
-        className="relative z-10 mt-[4vh] flex w-140 items-center gap-2 rounded-[14px] bg-(--color-surface-default) px-4 py-2 shadow-[0_2px_16px_0_rgba(0,0,0,0.06)]"
+        className="relative z-10 mt-[4vh] flex w-full max-w-140 items-center gap-2 rounded-[14px] bg-(--color-surface-default) px-4 py-2 shadow-[0_2px_16px_0_rgba(0,0,0,0.06)] mx-8 lg:mx-0"
       >
         <div className="size-6 shrink-0 overflow-hidden">
           <SearchIcon className="block size-full text-(--color-text-tertiary)" />
