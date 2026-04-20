@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowRightIcon } from "@/shared/assets/icons";
+import { ArrowNarrowRightIcon } from "@/shared/assets/icons";
 import { motion } from "framer-motion";
 import MeetingCard from "./MeetingCard";
 import type { MeetingCardProps } from "./MeetingCard";
@@ -74,10 +74,10 @@ export default function MeetingsSection() {
         </div>
         <Link
           href="/feed"
-          className="flex items-center gap-1 text-body text-(--color-text-secondary) animate-pulse"
+          className="flex items-center gap-2.5 rounded-xl py-2 pr-2 pl-4 text-label-large animate-pulse text-(--color-text-secondary)"
         >
-          전체 보기
-          <ArrowRightIcon width={14} height={14} />
+          모임 더 보기
+          <ArrowNarrowRightIcon width={16} height={16} />
         </Link>
       </div>
 

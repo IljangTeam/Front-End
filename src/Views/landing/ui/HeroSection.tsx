@@ -113,7 +113,7 @@ export default function HeroSection() {
               className="flex items-center gap-2 rounded-xl bg-(--color-interactive-primary) py-3 pr-3 pl-5 text-label-large text-(--color-text-inverse)"
             >
               지금 시작하기
-              <ChevronRightIcon width={20} height={20} />
+              <ChevronRightIcon width={20} height={20} className="block" />
             </Link>
             <button
               onClick={() =>
