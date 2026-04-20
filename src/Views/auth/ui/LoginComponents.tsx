@@ -60,7 +60,10 @@ type AuthSubmitButtonProps = {
   contents: string;
   isValid?: boolean;
 };
-export function AuthSubmitButton({ contents, isValid = true }: AuthSubmitButtonProps) {
+export function AuthSubmitButton({
+  contents,
+  isValid = true,
+}: AuthSubmitButtonProps) {
   return (
     <SubmitButton type="submit" $isValid={isValid}>
       <BodyLarge>{contents}</BodyLarge>
@@ -223,7 +226,7 @@ const SubmitButton = styled.button<{ $isValid: boolean }>`
   color: white;
   white-space: nowrap;
 
-  cursor: ${({ $isValid }) => ($isValid ? "pointer" : "none")};
+  cursor: ${({ $isValid }) => ($isValid ? "pointer" : "not-allowed")};
   background: ${({ $isValid }) =>
     $isValid
       ? "var(--color-interactive-primary, #1a1a1a)"
