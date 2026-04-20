@@ -2,6 +2,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import styled from "@emotion/styled";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -26,6 +27,51 @@ const ALIAS_MAP: Record<string, string> = {
 
 // IO가 실제로 관측할 모든 섹션 id
 const OBSERVED_IDS = [...NAV_IDS, ...Object.keys(ALIAS_MAP)];
+
+const GRADIENT_ACCENT = "linear-gradient(163deg, #764AE9 0%, #D4B8D8 100%)";
+
+/* ── Emotion: 상태 기반 동적 스타일 ── */
+
+const NavLabel = styled.span<{ $active: boolean }>`
+  transition: transform 0.3s;
+  color: ${({ $active }) =>
+    $active ? "var(--color-text-primary)" : "var(--color-text-secondary)"};
+  transform: ${({ $active }) => ($active ? "translateY(-4px)" : "none")};
+
+  &:hover {
+    background-image: ${GRADIENT_ACCENT};
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+`;
+
+const NavDot = styled.span<{ $active: boolean }>`
+  transition: transform 0.3s, opacity 0.3s;
+  background: var(--color-text-primary);
+  transform: ${({ $active }) =>
+    $active ? "translateY(-8px) scale(1)" : "translateY(-4px) scale(0)"};
+  opacity: ${({ $active }) => ($active ? 1 : 0)};
+
+  button:hover & {
+    background: ${GRADIENT_ACCENT};
+  }
+`;
+
+const GradientTextLink = styled(Link)`
+  &:hover {
+    background-image: ${GRADIENT_ACCENT};
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+`;
+
+const GradientBgLink = styled(Link)`
+  &:hover {
+    background: ${GRADIENT_ACCENT};
+  }
+`;
 
 export default function LandingGNB() {
   const [activeId, setActiveId] = useState<string>("hero");
@@ -119,24 +165,14 @@ export default function LandingGNB() {
               <button
                 key={item.href}
                 onClick={() => handleNavClick(item.href)}
-                className="group relative flex cursor-pointer items-center justify-center"
+                className="relative flex cursor-pointer items-center justify-center"
               >
-                <span
-                  className={`text-label-large transition-transform duration-300 hover:bg-clip-text hover:text-transparent hover:[-webkit-background-clip:text] hover:bg-[linear-gradient(163deg,#764AE9,#D4B8D8)] ${
-                    isActive
-                      ? "text-(--color-text-primary) -translate-y-1"
-                      : "text-(--color-text-secondary)"
-                  }`}
-                >
+                <NavLabel className="text-label-large" $active={isActive}>
                   {item.label}
-                </span>
-                {/* indicator dot */}
-                <span
-                  className={`absolute -bottom-2.5 size-1 rounded-full bg-(--color-text-primary) transition-all duration-300 group-hover:[background:linear-gradient(163deg,#764AE9,#D4B8D8)] ${
-                    isActive
-                      ? "-translate-y-2 scale-100 opacity-100"
-                      : "-translate-y-1 scale-0 opacity-0"
-                  }`}
+                </NavLabel>
+                <NavDot
+                  className="absolute -bottom-2.5 size-1 rounded-full"
+                  $active={isActive}
                 />
               </button>
             );
@@ -145,18 +181,18 @@ export default function LandingGNB() {
 
         {/* Auth Buttons */}
         <div className="flex items-center gap-4">
-          <Link
+          <GradientTextLink
             href="/auth"
-            className="whitespace-nowrap rounded-xl px-4 py-2 text-center text-label-large text-(--color-text-secondary) transition-all duration-300 hover:bg-clip-text hover:text-transparent hover:[-webkit-background-clip:text] hover:bg-[linear-gradient(163deg,#764AE9,#D4B8D8)]"
+            className="whitespace-nowrap rounded-xl px-4 py-2 text-center text-label-large text-(--color-text-secondary)"
           >
             로그인
-          </Link>
-          <Link
+          </GradientTextLink>
+          <GradientBgLink
             href="/auth"
-            className="whitespace-nowrap rounded-xl bg-(--color-interactive-primary) px-4 py-2 text-center text-label-large text-(--color-text-inverse) transition-all duration-300 hover:[background:linear-gradient(162deg,#764AE9,#D4B8D8)]"
+            className="whitespace-nowrap rounded-xl bg-(--color-interactive-primary) px-4 py-2 text-center text-label-large text-(--color-text-inverse)"
           >
             회원가입
-          </Link>
+          </GradientBgLink>
         </div>
       </div>
     </nav>

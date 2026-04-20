@@ -22,7 +22,7 @@ export default function CtaSection() {
         href="/auth"
         className="group rounded-xl border border-(--color-border-default) bg-(--color-surface-default) px-5 py-3 opacity-50 transition-all duration-300 hover:border-[#764AE9] hover:bg-white"
       >
-        <span className="text-label-large text-(--color-text-primary) transition-all duration-300 group-hover:bg-clip-text group-hover:text-transparent group-hover:[-webkit-background-clip:text] group-hover:bg-[linear-gradient(165deg,#764AE9,#D4B8D8)]">
+        <span className="text-label-large text-(--color-text-primary) group-hover:bg-clip-text group-hover:text-transparent group-hover:[-webkit-background-clip:text] group-hover:bg-[linear-gradient(165deg,#764AE9,#D4B8D8)]">
           무료로 시작하기
         </span>
       </Link>
