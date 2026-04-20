@@ -48,22 +48,58 @@ spec:
         }
 
         stage('Build & Push Docker Image') {
+            // pre-configured 'kaniko' 파드 템플릿의 jnlp 컨테이너에는 /tools/kubectl
+            // 경로가 없어 sh 호출이 exit 127 로 실패한다 (front 만의 환경 이슈).
+            // gakhalmo-back 의 검증된 패턴으로 tools(bitnami/kubectl) + kaniko
+            // 컨테이너를 inline yaml 로 직접 정의 — `sh` 는 tools 에서 실행되어
+            // durable-task 종료 감지가 정상 동작하고, kaniko 는 kubectl exec 로
+            // 명령만 주입받는다.
             agent {
                 kubernetes {
-                    label 'kaniko'
+                    label 'gakhalmo-front-kaniko'
+                    yaml """
+apiVersion: v1
+kind: Pod
+spec:
+  containers:
+    - name: tools
+      image: docker.io/bitnami/kubectl:latest
+      command: ['cat']
+      tty: true
+      securityContext:
+        runAsUser: 0
+    - name: kaniko
+      image: gcr.io/kaniko-project/executor:debug
+      command: ['/busybox/cat']
+      tty: true
+      volumeMounts:
+        - name: docker-config
+          mountPath: /kaniko/.docker
+  volumes:
+    - name: docker-config
+      secret:
+        secretName: ocir-kaniko-secret
+"""
                 }
             }
             steps {
-                container('jnlp') {
+                // env 별 kaniko cache repo 를 분리 — NFS 공유 환경에서 dev/prod
+                // 가 서로의 cache 를 덮어쓰지 않도록 한다 (back Jenkinsfile 주석
+                // 참고).
+                script {
+                    env.KANIKO_CACHE_REPO = "${OCIR_REGISTRY}/${OCIR_NAMESPACE}/${IMAGE_NAME}/cache/${env.TARGET_ENV}"
+                }
+                container('tools') {
                     sh """
-                        /tools/kubectl exec -n jenkins \$(cat /etc/hostname) -c kaniko -- /kaniko/executor \\
+                        kubectl exec -n jenkins \$(hostname) -c kaniko -- /kaniko/executor \\
                             --context=dir://\${WORKSPACE} \\
                             --dockerfile=\${WORKSPACE}/Dockerfile \\
+                            --customPlatform=linux/arm64 \\
                             --destination=${env.FULL_IMAGE} \\
                             --destination=${OCIR_REGISTRY}/${OCIR_NAMESPACE}/${IMAGE_NAME}:${env.TARGET_ENV} \\
-                            --customPlatform=linux/arm64 \\
                             --cache=true \\
-                            --cache-repo=${OCIR_REGISTRY}/${OCIR_NAMESPACE}/${IMAGE_NAME}/cache
+                            --cache-repo=${env.KANIKO_CACHE_REPO} \\
+                            --cache-ttl=168h
                     """
                 }
             }
@@ -72,23 +108,44 @@ spec:
         stage('Update GitOps Repository') {
             agent {
                 kubernetes {
-                    label 'kaniko'
+                    label 'gakhalmo-front-gitops'
+                    yaml """
+apiVersion: v1
+kind: Pod
+spec:
+  containers:
+    - name: git
+      image: docker.io/alpine/git:latest
+      command: ['cat']
+      tty: true
+"""
                 }
             }
             steps {
-                container('jnlp') {
+                container('git') {
                     withCredentials([usernamePassword(credentialsId: "${GITOPS_CREDENTIALS}", usernameVariable: 'GIT_USER', passwordVariable: 'GIT_TOKEN')]) {
+                        // Token 은 http.extraheader 를 통해 base64 로 전달 — clone URL
+                        // / git reflog / Jenkins console 어디에도 평문 노출되지 않는다.
+                        // NFS 워크스페이스라 이전 빌드의 gitops-repo 가 남아있을 수
+                        // 있어 clone 전에 강제 삭제.
+                        sh '''
+                            set +x
+                            rm -rf gitops-repo
+                            GIT_AUTH_HEADER="Authorization: Basic $(printf '%s:%s' "$GIT_USER" "$GIT_TOKEN" | base64 | tr -d '\\n')"
+                            git -c http.extraheader="$GIT_AUTH_HEADER" \\
+                                clone https://github.com/leestana01/gitops.git gitops-repo
+                        '''
                         sh """
-                            git clone https://\${GIT_USER}:\${GIT_TOKEN}@github.com/leestana01/gitops.git gitops-repo
+                            set +x
+                            GIT_AUTH_HEADER="Authorization: Basic \$(printf '%s:%s' "\$GIT_USER" "\$GIT_TOKEN" | base64 | tr -d '\\n')"
                             cd gitops-repo
-
                             sed -i "s|newTag:.*|newTag: ${env.IMAGE_TAG}|" ${env.GITOPS_KUSTOMIZE_DIR}/kustomization.yaml
 
                             git config user.email "jenkins@klr.kr"
                             git config user.name "Jenkins CI"
                             git add ${env.GITOPS_KUSTOMIZE_DIR}/kustomization.yaml
                             git commit -m "update ${IMAGE_NAME} to ${env.IMAGE_TAG}" || echo "No changes to commit"
-                            git push origin HEAD:main
+                            git -c http.extraheader="\$GIT_AUTH_HEADER" push origin HEAD:main
                         """
                     }
                 }
