@@ -85,7 +85,7 @@ export default function MeetingsSection() {
       </div>
 
       {/* 카드 그리드 — 차례대로 위로 올라오는 stagger */}
-      <div className="grid grid-cols-3 gap-5">
+      <div className="grid grid-cols-2 gap-5 lg:grid-cols-3">
         {MOCK_MEETINGS.map((meeting, i) => (
           <motion.div
             key={`${meeting.title}-${meeting.round}`}
@@ -97,6 +97,7 @@ export default function MeetingsSection() {
               delay: i * 0.15,
               ease: [0.25, 0.1, 0.25, 1],
             }}
+            className={i === MOCK_MEETINGS.length - 1 ? "hidden lg:block" : ""}
           >
             <div className="transition-transform duration-200 hover:-translate-y-0.75">
               <MeetingCard {...meeting} />

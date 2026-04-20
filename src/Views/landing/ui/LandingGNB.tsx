@@ -142,7 +142,7 @@ export default function LandingGNB() {
 
   return (
     <nav className="fixed top-0 right-0 left-0 z-50 flex justify-center pt-10">
-      <div className="flex items-center gap-16 rounded-2xl bg-(--color-surface-default) p-3 shadow-[0_2px_16px_0_rgba(0,0,0,0.06)]">
+      <div className="flex items-center gap-6 lg:gap-16 rounded-2xl bg-(--color-surface-default) p-3 shadow-[0_2px_16px_0_rgba(0,0,0,0.06)]">
         {/* 로고 */}
         <div className="flex h-8 items-center gap-2.5 px-1">
           <Image
@@ -152,13 +152,13 @@ export default function LandingGNB() {
             height={32}
             priority
           />
-          <span className="text-2xl font-bold tracking-[-0.24px] text-(--color-text-primary)">
+          <span className="hidden lg:inline text-2xl font-bold tracking-[-0.24px] text-(--color-text-primary)">
             GAKALMO
           </span>
         </div>
 
         {/* Nav Links */}
-        <div className="flex items-center gap-9">
+        <div className="flex items-center gap-5 lg:gap-9">
           {NAV_ITEMS.map((item) => {
             const isActive = activeId === item.href.slice(1);
             return (
@@ -180,7 +180,7 @@ export default function LandingGNB() {
         </div>
 
         {/* Auth Buttons */}
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-2 lg:gap-4">
           <GradientTextLink
             href="/auth"
             className="whitespace-nowrap rounded-xl px-4 py-2 text-center text-label-large text-(--color-text-secondary)"
