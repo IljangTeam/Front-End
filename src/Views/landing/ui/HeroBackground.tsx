@@ -49,6 +49,10 @@ const Orb = styled.div<{
   filter: blur(90px);
   animation: ${({ $animation }) => $animation} ${({ $duration }) => $duration}s ease-in-out infinite;
   will-change: transform;
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+  }
 `;
 
 export default function HeroBackground() {
