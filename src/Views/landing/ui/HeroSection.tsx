@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { ChevronRight, Search } from "@/shared/ui/icons";
+import { ChevronRightIcon, SearchIcon } from "@/shared/assets/icons";
 import { useScroll, useTransform, motion } from "framer-motion";
 import HeroTagChip from "./HeroTagChip";
 
@@ -113,7 +113,7 @@ export default function HeroSection() {
               className="flex items-center gap-2 rounded-xl bg-(--color-interactive-primary) py-3 pr-3 pl-5 text-label-large text-(--color-text-inverse)"
             >
               지금 시작하기
-              <ChevronRight size={20} />
+              <ChevronRightIcon width={20} height={20} />
             </Link>
             <button
               onClick={() =>
@@ -134,7 +134,7 @@ export default function HeroSection() {
         style={{ opacity: bottomOpacity, y: bottomY }}
         className="relative z-10 mt-[4vh] flex w-140 items-center gap-2 rounded-[14px] bg-(--color-surface-default) px-4 py-2 shadow-[0_2px_16px_0_rgba(0,0,0,0.06)]"
       >
-        <Search size={24} className="text-(--color-text-tertiary)" />
+        <SearchIcon width={24} height={24} className="text-(--color-text-tertiary)" />
         <span className="text-body text-(--color-text-tertiary)">
           모임 이름, 스킬, 장소로 검색
         </span>
