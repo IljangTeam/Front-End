@@ -1,7 +1,5 @@
 "use client";
 
-import { useState } from "react";
-
 // ===== hook =====
 import { useLoginFormData } from "../model/useLoginFormData";
 
@@ -10,14 +8,17 @@ import {
   AuthInputComponent as LoginInput,
   AuthSubmitButton as SubmitButton,
 } from "./LoginComponents";
+import {
+  LOGIN_INPUT_CONTENTS,
+  LOGIN_FIND_PASSWORD,
+  LOGIN_SUBMIT_BUTTON,
+} from "./auth.constant";
 
 export default function LoginView() {
   const {
-    form,
-    updateEmail,
-    updatePassword,
+    register,
     handleSubmit,
-    isValid,
+    errors,
     showPassword,
     togglePasswordVisibility,
   } = useLoginFormData();
@@ -29,17 +30,30 @@ export default function LoginView() {
         className="flex flex-col justify-between items-center min-w-full gap-3"
       >
         <LoginInput
-          title="이메일"
-          placeholder="example@email.com"
-          onChange={(e) => updateEmail(e.target.value)}
-          value={form.email === "" ? undefined : form.email}
+          title={LOGIN_INPUT_CONTENTS.email.title}
+          placeholder={LOGIN_INPUT_CONTENTS.email.placeholder}
+          type="email"
+          {...register("email", {
+            required: "이메일을 입력해주세요",
+            pattern: {
+              value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+              message: "올바른 이메일 형식을 입력해주세요",
+            },
+          })}
+          error={errors.email?.message}
         />
         <LoginInput
-          title="비밀번호"
-          placeholder="비밀번호 입력"
+          title={LOGIN_INPUT_CONTENTS.password.title}
+          placeholder={LOGIN_INPUT_CONTENTS.password.placeholder}
           type={showPassword ? "text" : "password"}
-          onChange={(e) => updatePassword(e.target.value)}
-          value={form.password === "" ? undefined : form.password}
+          {...register("password", {
+            required: "비밀번호를 입력해주세요",
+            minLength: {
+              value: 8,
+              message: "비밀번호는 8자 이상이어야 합니다",
+            },
+          })}
+          error={errors.password?.message}
           suffix={
             <button type="button" onClick={togglePasswordVisibility}>
               {showPassword ? (
@@ -50,11 +64,11 @@ export default function LoginView() {
             </button>
           }
         />
-        <span className="text-[var(--color-text-tertiary)] text-right font-['Pretendard_Variable'] text-[12px] right font-medium leading-[18px] underline w-full cursor-pointer">
-          비밀번호를 잊으셨나요?
+        <span className="text-(--color-text-tertiary) text-right font-['Pretendard_Variable'] text-[12px] right font-medium leading-4.5 underline w-full cursor-pointer">
+          {LOGIN_FIND_PASSWORD}
         </span>
 
-        <SubmitButton contents="이메일로 로그인" />
+        <SubmitButton contents={LOGIN_SUBMIT_BUTTON} />
       </form>
     </div>
   );

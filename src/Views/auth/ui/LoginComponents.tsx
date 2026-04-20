@@ -1,8 +1,11 @@
 "use client";
+import React from "react";
 import styled from "@emotion/styled";
 import { css } from "@emotion/react";
 import { Body, BodyBold, BodyLarge, Label } from "@/shared/ui/typography";
 import { typo } from "@/shared/ui/typography";
+
+import { LOGIN_GOOGLE } from "./auth.constant";
 
 /*=============================================== */
 /*                Auth Input Component             */
@@ -11,33 +14,25 @@ import { typo } from "@/shared/ui/typography";
 type AuthInputComponentProps = {
   title: string;
   placeholder: string;
-  type?: "email" | "password" | "name" | "text";
-  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   suffix?: React.ReactNode;
-  value?: string;
-};
+  error?: string;
+} & Omit<React.InputHTMLAttributes<HTMLInputElement>, "prefix">;
 
-export function AuthInputComponent({
-  title,
-  placeholder,
-  type = "email",
-  onChange,
-  suffix,
-  value,
-}: AuthInputComponentProps) {
+export const AuthInputComponent = React.forwardRef<
+  HTMLInputElement,
+  AuthInputComponentProps
+>(({ title, placeholder, suffix, error, ...rest }, ref) => {
   return (
     <div className="flex flex-col justify-between items-left min-w-full gap-1">
       <BodyBold>{title}</BodyBold>
-      <AuthInput
-        placeholder={placeholder}
-        type={type}
-        onChange={onChange}
-        suffix={suffix}
-        value={value}
-      />
+      <AuthInput placeholder={placeholder} suffix={suffix} ref={ref} {...rest} />
+      {error && (
+        <span className="text-red-500 text-[11px] font-medium">{error}</span>
+      )}
     </div>
   );
-}
+});
+AuthInputComponent.displayName = "AuthInputComponent";
 
 /*=============================================== */
 /*           Auth OAuth Button Component          */
@@ -47,7 +42,7 @@ export function AuthOAuthButton() {
   return (
     <OAuthButton>
       <img src="/assets/google-logo.svg" alt="google logo" />
-      <BodyBold>Google로 가입하기</BodyBold>
+      <BodyBold>{LOGIN_GOOGLE}</BodyBold>
     </OAuthButton>
   );
 }
@@ -132,36 +127,25 @@ export function AuthMethod({ state, onToggle }: AuthMethodProps) {
   );
 }
 
-/* =========== Emotin Styling Components ========= */
+/* =========== Emotion Styling Components ========= */
 
-/* ===== AuthInputComponenet ====== */
+/* ===== AuthInputComponent ====== */
 type AuthInputProps = {
   placeholder: string;
-  type?: "email" | "password" | "name" | "text";
-  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   suffix?: React.ReactNode;
-  value?: string;
-};
+} & React.InputHTMLAttributes<HTMLInputElement>;
 
-function AuthInput({
-  placeholder,
-  type = "email",
-  onChange,
-  suffix,
-  value,
-}: AuthInputProps) {
-  return (
-    <AuthInputWrapper>
-      <StyledInput
-        placeholder={placeholder}
-        type={type}
-        onChange={onChange}
-        value={value}
-      />
-      {suffix && <SuffixContainer>{suffix}</SuffixContainer>}
-    </AuthInputWrapper>
-  );
-}
+const AuthInput = React.forwardRef<HTMLInputElement, AuthInputProps>(
+  ({ placeholder, suffix, ...rest }, ref) => {
+    return (
+      <AuthInputWrapper>
+        <StyledInput placeholder={placeholder} ref={ref} {...rest} />
+        {suffix && <SuffixContainer>{suffix}</SuffixContainer>}
+      </AuthInputWrapper>
+    );
+  },
+);
+AuthInput.displayName = "AuthInput";
 
 const AuthInputWrapper = styled.div`
   position: relative;
@@ -254,12 +238,8 @@ const Container = styled.div`
 
 const SliderIndicator = styled.div<{ active: boolean }>`
   position: absolute;
-  /* top: 4px;
-  left: 4px; */
   top: 2px;
   left: 2px;
-  /* width: calc(50% - 4px);
-  height: calc(100% - 4px); */
   width: 50%;
   height: calc(100% - 4px);
 

@@ -1,7 +1,5 @@
 "use client";
 
-import { useState } from "react";
-
 // ===== hook =====
 import { useSignupFormData } from "../model/useSignupFormData";
 // ===== ui components =====
@@ -9,21 +7,18 @@ import {
   AuthInputComponent as LoginInput,
   AuthSubmitButton as SubmitButton,
 } from "./LoginComponents";
-
-type SignupFormData = {
-  name: string;
-  email: string;
-  password: string;
-};
+import {
+  SIGNUP_INPUT_CONTENS,
+  SIGNUP_SUBMIT_BUTTON,
+  SIGNUP_CAPTION,
+} from "./auth.constant";
 
 export default function SignupView() {
   const {
-    form,
-    updateName,
-    updateEmail,
-    updatePassword,
-    updatePasswordConfirm,
+    register,
     handleSubmit,
+    watch,
+    errors,
     showPassword,
     togglePasswordVisibility,
   } = useSignupFormData();
@@ -37,24 +32,39 @@ export default function SignupView() {
       >
         <div className="flex flex-col items-center w-full h-full gap-3">
           <LoginInput
-            title="이름"
-            placeholder="홍길동"
+            title={SIGNUP_INPUT_CONTENS.name.title}
+            placeholder={SIGNUP_INPUT_CONTENS.name.placeholder}
             type="text"
-            onChange={(e) => updateName(e.target.value)}
-            value={form.name === "" ? undefined : form.name}
+            {...register("name", {
+              required: "이름을 입력해주세요",
+            })}
+            error={errors.name?.message}
           />
           <LoginInput
-            title="이메일"
-            placeholder="example@email.com"
-            onChange={(e) => updateEmail(e.target.value)}
-            value={form.email === "" ? undefined : form.email}
+            title={SIGNUP_INPUT_CONTENS.email.title}
+            placeholder={SIGNUP_INPUT_CONTENS.email.placeholder}
+            type="email"
+            {...register("email", {
+              required: "이메일을 입력해주세요",
+              pattern: {
+                value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                message: "올바른 이메일 형식을 입력해주세요",
+              },
+            })}
+            error={errors.email?.message}
           />
           <LoginInput
-            title="비밀번호"
-            placeholder="비밀번호 입력"
+            title={SIGNUP_INPUT_CONTENS.password.title}
+            placeholder={SIGNUP_INPUT_CONTENS.password.placeholder}
             type={showPassword ? "text" : "password"}
-            onChange={(e) => updatePassword(e.target.value)}
-            value={form.password === "" ? undefined : form.password}
+            {...register("password", {
+              required: "비밀번호를 입력해주세요",
+              minLength: {
+                value: 8,
+                message: "비밀번호는 8자 이상이어야 합니다",
+              },
+            })}
+            error={errors.password?.message}
             suffix={
               <button type="button" onClick={togglePasswordVisibility}>
                 {showPassword ? (
@@ -66,19 +76,23 @@ export default function SignupView() {
             }
           />
           <LoginInput
-            title="비밀번호 확인"
-            placeholder="비밀번호를 한 번 더 입력해주세요"
+            title={SIGNUP_INPUT_CONTENS.passwordConfirm.title}
+            placeholder={SIGNUP_INPUT_CONTENS.passwordConfirm.placeholder}
             type="password"
-            onChange={(e) => updatePasswordConfirm(e.target.value)}
+            {...register("passwordConfirm", {
+              required: "비밀번호를 한 번 더 입력해주세요",
+              validate: (value) =>
+                value === watch("password") || "비밀번호가 일치하지 않습니다",
+            })}
+            error={errors.passwordConfirm?.message}
           />
         </div>
 
         <div className="flex flex-col w-full gap-4">
-          <SubmitButton contents="이메일로 가입하기" />
-          <span className="text-[var(--color-text-tertiary)] font-['Pretendard_Variable'] text-center text-[11px] font-normal leading-[17.6px] underline">
-            가입 시 각할모의 이용약관과 개인정보처리방침에 동의하는 것으로
-            간주됩니다.
+          <span className="text-(--color-text-tertiary) font-['Pretendard_Variable'] text-center text-[11px] font-normal leading-[17.6px] underline">
+            {SIGNUP_CAPTION}
           </span>
+          <SubmitButton contents={SIGNUP_SUBMIT_BUTTON} />
         </div>
       </form>
     </div>
