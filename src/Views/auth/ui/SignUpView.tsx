@@ -19,6 +19,7 @@ export default function SignupView() {
     handleSubmit,
     watch,
     errors,
+    isValid,
     showPassword,
     togglePasswordVisibility,
   } = useSignupFormData();
@@ -92,7 +93,7 @@ export default function SignupView() {
           <span className="text-(--color-text-tertiary) font-['Pretendard_Variable'] text-center text-[11px] font-normal leading-[17.6px] underline">
             {SIGNUP_CAPTION}
           </span>
-          <SubmitButton contents={SIGNUP_SUBMIT_BUTTON} />
+          <SubmitButton contents={SIGNUP_SUBMIT_BUTTON} isValid={isValid} />
         </div>
       </form>
     </div>

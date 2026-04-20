@@ -25,7 +25,12 @@ export const AuthInputComponent = React.forwardRef<
   return (
     <div className="flex flex-col justify-between items-left min-w-full gap-1">
       <BodyBold>{title}</BodyBold>
-      <AuthInput placeholder={placeholder} suffix={suffix} ref={ref} {...rest} />
+      <AuthInput
+        placeholder={placeholder}
+        suffix={suffix}
+        ref={ref}
+        {...rest}
+      />
       {error && (
         <span className="text-red-500 text-[11px] font-medium">{error}</span>
       )}
@@ -53,10 +58,11 @@ export function AuthOAuthButton() {
 
 type AuthSubmitButtonProps = {
   contents: string;
+  isValid?: boolean;
 };
-export function AuthSubmitButton({ contents }: AuthSubmitButtonProps) {
+export function AuthSubmitButton({ contents, isValid = true }: AuthSubmitButtonProps) {
   return (
-    <SubmitButton type="submit">
+    <SubmitButton type="submit" $isValid={isValid}>
       <BodyLarge>{contents}</BodyLarge>
     </SubmitButton>
   );
@@ -205,9 +211,7 @@ const OAuthButton = styled.button`
 `;
 
 /* ===== AuthSubmitButton ====== */
-const SubmitButton = styled.button`
-  cursor: pointer;
-
+const SubmitButton = styled.button<{ $isValid: boolean }>`
   width: 100%;
   display: flex;
   padding: 12px 141px;
@@ -217,8 +221,13 @@ const SubmitButton = styled.button`
   align-self: stretch;
   border-radius: 12px;
   color: white;
-  background: var(--color-interactive-primary, #1a1a1a);
   white-space: nowrap;
+
+  cursor: ${({ $isValid }) => ($isValid ? "pointer" : "none")};
+  background: ${({ $isValid }) =>
+    $isValid
+      ? "var(--color-interactive-primary, #1a1a1a)"
+      : "var(--palette-gray-500)"};
 `;
 
 /* ===== AuthMethod ====== */

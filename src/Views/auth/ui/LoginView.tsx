@@ -19,6 +19,7 @@ export default function LoginView() {
     register,
     handleSubmit,
     errors,
+    isValid,
     showPassword,
     togglePasswordVisibility,
   } = useLoginFormData();
@@ -68,7 +69,7 @@ export default function LoginView() {
           {LOGIN_FIND_PASSWORD}
         </span>
 
-        <SubmitButton contents={LOGIN_SUBMIT_BUTTON} />
+        <SubmitButton contents={LOGIN_SUBMIT_BUTTON} isValid={isValid} />
       </form>
     </div>
   );
