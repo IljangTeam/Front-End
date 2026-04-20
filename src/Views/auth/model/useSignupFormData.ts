@@ -1,9 +1,10 @@
-// features/auth/_model/useSignupFormData.ts
 "use client";
 
-import { useState, FormEvent } from "react";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { useRouter } from "next/navigation";
 
-interface SignupFormData {
+export interface SignupFormData {
   name: string;
   email: string;
   password: string;
@@ -11,67 +12,31 @@ interface SignupFormData {
 }
 
 export function useSignupFormData() {
-  const [form, setForm] = useState<SignupFormData>({
-    name: "",
-    email: "",
-    password: "",
-    passwordConfirm: "",
-  });
+  const router = useRouter();
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors, isValid },
+  } = useForm<SignupFormData>({ mode: "onTouched" });
+
   const [showPassword, setShowPassword] = useState(false);
 
-  const updateName = (value: string) => {
-    setForm((prev) => ({ ...prev, name: value }));
-  };
+  const togglePasswordVisibility = () => setShowPassword((prev) => !prev);
 
-  const updateEmail = (value: string) => {
-    setForm((prev) => ({ ...prev, email: value }));
-  };
-
-  const updatePassword = (value: string) => {
-    setForm((prev) => ({ ...prev, password: value }));
-  };
-
-  const updatePasswordConfirm = (value: string) => {
-    setForm((prev) => ({ ...prev, passwordConfirm: value }));
-  };
-
-  const togglePasswordVisibility = () => {
-    setShowPassword((prev) => !prev);
-  };
-
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    if (!isValid) {
-      console.log("모든 필드를 입력해주세요.");
-      return;
-    }
-
-    if (!isPasswordMatch) {
-      console.log("비밀번호가 일치하지 않습니다.");
-      return;
-    }
-
+  const onSubmit = (data: SignupFormData) => {
     console.log(
-      `이름: ${form.name}, 이메일: ${form.email}, 비밀번호: ${form.password}`,
+      `이름: ${data.name}, 이메일: ${data.email}, 비밀번호: ${data.password}`,
     );
-    // TODO: API 호출
+    router.push("/");
   };
-
-  const isValid = Boolean(
-    form.name && form.email && form.password && form.passwordConfirm,
-  );
-  const isPasswordMatch = form.password === form.passwordConfirm;
 
   return {
-    form,
-    updateName,
-    updateEmail,
-    updatePassword,
-    updatePasswordConfirm,
-    handleSubmit,
+    register,
+    handleSubmit: handleSubmit(onSubmit),
+    watch,
+    errors,
     isValid,
-    isPasswordMatch,
     showPassword,
     togglePasswordVisibility,
   };

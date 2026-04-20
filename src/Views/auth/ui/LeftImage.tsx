@@ -1,7 +1,7 @@
 export default function LeftImage() {
   return (
     <div
-      className="relative min-w-[480px] w-full min-h-[605.667px] h-full rounded-3xl bg-gray-300 bg-center bg-cover bg-no-repeat"
+      className="relative min-w-120 w-full min-h-[605.667px] h-full rounded-3xl bg-gray-300 bg-center bg-cover bg-no-repeat"
       style={{ backgroundImage: "url(/assets/auth-background.png)" }}
     >
       {/* 서비스 svg logo */}

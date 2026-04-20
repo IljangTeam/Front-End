@@ -1,46 +1,35 @@
-// features/auth/_model/useLoginFormData.ts
 "use client";
 
-import { useState, FormEvent } from "react";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { useRouter } from "next/navigation";
 
-interface LoginFormData {
+export interface LoginFormData {
   email: string;
   password: string;
 }
 
 export function useLoginFormData() {
-  const [form, setForm] = useState<LoginFormData>({
-    email: "",
-    password: "",
-  });
+  const router = useRouter();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isValid },
+  } = useForm<LoginFormData>({ mode: "onTouched" });
+
   const [showPassword, setShowPassword] = useState(false);
 
-  const updateEmail = (value: string) => {
-    setForm((prev) => ({ ...prev, email: value }));
-  };
+  const togglePasswordVisibility = () => setShowPassword((prev) => !prev);
 
-  const updatePassword = (value: string) => {
-    setForm((prev) => ({ ...prev, password: value }));
+  const onSubmit = (data: LoginFormData) => {
+    console.log(`이메일: ${data.email}, 비밀번호: ${data.password}`);
+    router.push("/");
   };
-
-  const togglePasswordVisibility = () => {
-    setShowPassword((prev) => !prev);
-  };
-
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (form.email && form.password) {
-      console.log(`이메일: ${form.email}, 비밀번호: ${form.password}`);
-    }
-  };
-
-  const isValid = Boolean(form.email && form.password);
 
   return {
-    form,
-    updateEmail,
-    updatePassword,
-    handleSubmit,
+    register,
+    handleSubmit: handleSubmit(onSubmit),
+    errors,
     isValid,
     showPassword,
     togglePasswordVisibility,
