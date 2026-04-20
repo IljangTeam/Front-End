@@ -12,7 +12,24 @@ pipeline {
 
     stages {
         stage('Determine Environment') {
-            agent any
+            // pipeline-level `agent none` 환경이라 `agent any` 로는 배정 가능한
+            // executor 가 없어 "Still waiting to schedule task" 로 무한 대기한다.
+            // 가벼운 alpine 파드를 띄워 env 결정만 수행한다.
+            agent {
+                kubernetes {
+                    label 'gakhalmo-front-resolve'
+                    yaml """
+apiVersion: v1
+kind: Pod
+spec:
+  containers:
+    - name: shell
+      image: docker.io/alpine:3.20
+      command: ['cat']
+      tty: true
+"""
+                }
+            }
             steps {
                 script {
                     if (env.BRANCH_NAME == 'main') {
