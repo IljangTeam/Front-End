@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>Claude Multi-Agent Dashboard</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans KR", sans-serif;
+    margin: 0;
+    padding: 24px;
+    background: #0f1115;
+    color: #e8e8ea;
+  }
+  h1 { margin: 0 0 8px; font-size: 22px; }
+  .sub { color: #9aa0a6; font-size: 13px; margin-bottom: 24px; }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+  .card {
+    background: #181b22;
+    border: 1px solid #2a2e37;
+    border-radius: 10px;
+    padding: 16px 18px;
+  }
+  .card h3 { margin: 0 0 8px; font-size: 13px; color: #9aa0a6; font-weight: 500; }
+  .value { font-size: 32px; font-weight: 600; }
+  .unit { color: #9aa0a6; font-size: 14px; margin-left: 6px; font-weight: 400; }
+  .ok { color: #7ee38a; }
+  .warn { color: #f0c674; }
+  .bad { color: #f07a7a; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+  th, td {
+    text-align: left;
+    padding: 8px 10px;
+    border-bottom: 1px solid #2a2e37;
+  }
+  th { color: #9aa0a6; font-weight: 500; }
+  .section { margin-bottom: 28px; }
+  .section h2 { font-size: 16px; margin: 0 0 12px; }
+  .bar {
+    height: 6px;
+    background: #2a2e37;
+    border-radius: 3px;
+    overflow: hidden;
+    margin-top: 6px;
+  }
+  .bar > span {
+    display: block;
+    height: 100%;
+    background: #5a9df0;
+  }
+  .warnings {
+    background: #2a1f15;
+    border: 1px solid #5a3a1a;
+    border-radius: 8px;
+    padding: 12px 14px;
+    font-size: 13px;
+    line-height: 1.6;
+  }
+  .warnings li { color: #f0c674; }
+  .muted { color: #9aa0a6; font-size: 12px; }
+  code { background: #0b0d11; padding: 2px 6px; border-radius: 4px; font-size: 12px; }
+  a { color: #5a9df0; }
+</style>
+</head>
+<body>
+<h1>Claude Multi-Agent Dashboard</h1>
+<div class="sub">data source: <code>.claude/metrics/aggregated.json</code> · 최근 업데이트: <span id="gen"></span></div>
+
+<div id="root"></div>
+
+<template id="noDataTpl">
+  <div class="card">
+    <h3>데이터 없음</h3>
+    <div class="muted">아직 실행 기록이 없습니다. 먼저 <code>python .claude/metrics/collect.py</code>를 실행하세요.</div>
+  </div>
+</template>
+
+<script>
+const pctColor = (v, good=70, warn=50) => v >= good ? 'ok' : v >= warn ? 'warn' : 'bad';
+const fmt = (n, unit='') => n == null ? '—' : `${n}${unit}`;
+const fmtMs = (ms) => {
+  if (ms == null) return '—';
+  const s = Math.round(ms / 1000);
+  const m = Math.floor(s / 60);
+  return m > 0 ? `${m}m ${s % 60}s` : `${s}s`;
+};
+
+async function load() {
+  try {
+    const r = await fetch('./aggregated.json?t=' + Date.now());
+    if (!r.ok) throw new Error('no data');
+    return await r.json();
+  } catch (e) {
+    return null;
+  }
+}
+
+function renderKpis(d) {
+  const kpis = [
+    {
+      label: '총 실행 수',
+      value: `<span class="value">${d.total_runs}</span>`
+    },
+    {
+      label: '자동 머지율',
+      value: `<span class="value ${pctColor(d.auto_merge_rate_pct)}">${d.auto_merge_rate_pct}<span class="unit">%</span></span>`
+    },
+    {
+      label: '평균 토론 라운드 (계획)',
+      value: `<span class="value">${fmt(d.avg_rounds_stage1)}</span>`
+    },
+    {
+      label: '평균 토론 라운드 (리뷰)',
+      value: `<span class="value">${fmt(d.avg_rounds_stage3)}</span>`
+    },
+    {
+      label: '중앙값 실행 시간',
+      value: `<span class="value">${fmtMs(d.median_duration_ms)}</span>`
+    },
+    {
+      label: '메모리 히트율',
+      value: `<span class="value ${pctColor(d.memory_hit_rate_pct, 60, 30)}">${d.memory_hit_rate_pct}<span class="unit">%</span></span>`
+    },
+  ];
+  return kpis.map(k => `
+    <div class="card">
+      <h3>${k.label}</h3>
+      ${k.value}
+    </div>
+  `).join('');
+}
+
+function renderOutcomes(d) {
+  const total = d.total_runs || 1;
+  const entries = Object.entries(d.outcomes || {});
+  const rows = entries.map(([k, v]) => {
+    const pct = (v / total * 100).toFixed(1);
+    return `<tr><td>${k}</td><td>${v}</td><td>${pct}%</td><td><div class="bar"><span style="width:${pct}%"></span></div></td></tr>`;
+  }).join('');
+  return `
+    <div class="section">
+      <h2>결과 분포</h2>
+      <table>
+        <thead><tr><th>outcome</th><th>count</th><th>pct</th><th></th></tr></thead>
+        <tbody>${rows}</tbody>
+      </table>
+    </div>
+  `;
+}
+
+function renderReviewers(d) {
+  const agents = Object.keys(d.reviewer_agreement || {});
+  const rows = agents.map(a => {
+    const st = d.reviewer_stats?.[a] || {};
+    const ag = d.reviewer_agreement[a] || {};
+    const ha = ag.human_agreement;
+    const haHtml = ha == null ? '<span class="muted">—</span>'
+                               : `<span class="${pctColor(ha)}">${ha}%</span>`;
+    return `<tr>
+      <td>${a}</td>
+      <td>${st.total || 0}</td>
+      <td>${ag.approve_rate ?? 0}%</td>
+      <td>${ag.block_rate ?? 0}%</td>
+      <td>${haHtml}</td>
+    </tr>`;
+  }).join('');
+  return `
+    <div class="section">
+      <h2>리뷰어별 지표</h2>
+      <table>
+        <thead><tr>
+          <th>agent</th><th>total verdicts</th><th>approve율</th><th>block율</th><th>사람-일치율</th>
+        </tr></thead>
+        <tbody>${rows || '<tr><td colspan="5" class="muted">데이터 없음</td></tr>'}</tbody>
+      </table>
+    </div>
+  `;
+}
+
+function renderEscalations(d) {
+  const rows = (d.top_escalation_reasons || []).map(([r, c]) =>
+    `<tr><td>${r}</td><td>${c}</td></tr>`).join('');
+  return `
+    <div class="section">
+      <h2>에스컬레이션 Top 사유</h2>
+      <table>
+        <thead><tr><th>reason</th><th>count</th></tr></thead>
+        <tbody>${rows || '<tr><td colspan="2" class="muted">데이터 없음</td></tr>'}</tbody>
+      </table>
+    </div>
+  `;
+}
+
+function renderRecentRuns(d) {
+  const runs = (d.runs || []).slice(-20).reverse();
+  const rows = runs.map(r => `
+    <tr>
+      <td>${r.run_id}</td>
+      <td>${r.issue_number ?? '—'}</td>
+      <td><span class="${r.outcome === 'approved' ? 'ok' : r.outcome === 'escalated' ? 'warn' : r.outcome === 'blocked' ? 'bad' : ''}">${r.outcome || '—'}</span></td>
+      <td>${r.rounds?.[1] ?? '—'} / ${r.rounds?.[3] ?? '—'}</td>
+      <td>${fmtMs(r.duration_ms)}</td>
+      <td>${r.memory_ids_count}</td>
+      <td>${r.counter_arguments}</td>
+      <td>${r.pr_url ? `<a href="${r.pr_url}" target="_blank">PR</a>` : '—'}</td>
+    </tr>
+  `).join('');
+  return `
+    <div class="section">
+      <h2>최근 실행 (최대 20개)</h2>
+      <table>
+        <thead><tr>
+          <th>run_id</th><th>issue</th><th>outcome</th><th>rounds (plan/review)</th>
+          <th>duration</th><th>memory hits</th><th>counters</th><th>PR</th>
+        </tr></thead>
+        <tbody>${rows || '<tr><td colspan="8" class="muted">데이터 없음</td></tr>'}</tbody>
+      </table>
+    </div>
+  `;
+}
+
+function renderWarnings(d) {
+  if (!d.warnings || !d.warnings.length) return '';
+  const items = d.warnings.map(w => `<li>${w}</li>`).join('');
+  return `
+    <div class="section">
+      <h2>경고</h2>
+      <ul class="warnings">${items}</ul>
+    </div>
+  `;
+}
+
+(async () => {
+  const d = await load();
+  const root = document.getElementById('root');
+  const gen = document.getElementById('gen');
+  if (!d) {
+    root.innerHTML = document.getElementById('noDataTpl').innerHTML;
+    gen.textContent = '—';
+    return;
+  }
+  gen.textContent = d.generated_at;
+  root.innerHTML =
+    `<div class="grid">${renderKpis(d)}</div>` +
+    renderWarnings(d) +
+    renderOutcomes(d) +
+    renderReviewers(d) +
+    renderEscalations(d) +
+    renderRecentRuns(d);
+})();
+</script>
+</body>
+</html>
