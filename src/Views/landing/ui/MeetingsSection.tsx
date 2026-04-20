@@ -3,8 +3,8 @@
 import Link from "next/link";
 import { ArrowNarrowRightIcon } from "@/shared/assets/icons";
 import { motion } from "framer-motion";
-import MeetingCard from "./MeetingCard";
-import type { MeetingCardProps } from "./MeetingCard";
+import MeetingCard from "@/shared/ui/MeetingCard";
+import type { MeetingCardProps } from "@/shared/ui/MeetingCard";
 
 // TODO: API 연동 후 TanStack Query 훅으로 교체
 // ex) const { data: meetings, error } = useLatestMeetings(3);
