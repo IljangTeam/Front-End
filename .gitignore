@@ -26,6 +26,8 @@
 
 # claude code (개인 메모리)
 .claude/projects/
+.claude/commands/*.md
+.claude/agents/*.md
 
 # debug
 npm-debug.log*
@@ -42,3 +44,29 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# 실행 기록(매 실행마다 갱신됨, 팀과 공유할 필요 없음)
+.claude/metrics/log.jsonl
+.claude/metrics/aggregated.json
+
+# 메모리 아카이브
+# lessons.archive.md는 오래된 교훈 보관용. 커밋하고 싶으면 이 줄을 지우세요.
+.claude/memory/lessons.archive.md
+
+# 각 에이전트가 중간에 만드는 scratch
+.claude/.scratch/
+.claude/tmp/
+
+# ============================================================
+# 참고: 커밋해야 하는 것(= .gitignore에 넣으면 안 되는 것)
+# ============================================================
+# .claude/memory/conventions.md  ← 팀의 컨벤션 (가장 중요!)
+# .claude/memory/decisions.md    ← ADR
+# .claude/memory/lessons.md      ← 배운 교훈
+# .claude/memory/patterns.md     ← 검증된 패턴
+# .claude/memory/CHANGELOG.md    ← 메모리 변경 이력
+# .claude/memory/README.md
+# .claude/metrics/README.md
+# .claude/metrics/log_helpers.py
+# .claude/metrics/collect.py
+# .claude/metrics/dashboard.html

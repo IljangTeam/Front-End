@@ -50,7 +50,7 @@ function MetaRow({
   );
 }
 
-function TagChip({ category, children }: { category: TAG_CATEGORY; children: ReactNode }) {
+function MeetingTagChip({ category, children }: { category: TAG_CATEGORY; children: ReactNode }) {
   return (
     <span
       className={`rounded-full px-2 py-1 text-label font-semibold ${TAG_CATEGORY_STYLES[category]}`}
@@ -112,9 +112,9 @@ export default function MeetingCard({
           <MetaRow icon={TagIcon} label="태그">
             <div className="flex items-center gap-1">
               {tags.map((tag) => (
-                <TagChip key={`${tag.category}-${tag.label}`} category={tag.category}>
+                <MeetingTagChip key={`${tag.category}-${tag.label}`} category={tag.category}>
                   {tag.label}
-                </TagChip>
+                </MeetingTagChip>
               ))}
             </div>
           </MetaRow>
