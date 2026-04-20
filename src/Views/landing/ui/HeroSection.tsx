@@ -113,7 +113,9 @@ export default function HeroSection() {
               className="flex items-center gap-2 rounded-xl bg-(--color-interactive-primary) py-3 pr-3 pl-5 text-label-large text-(--color-text-inverse)"
             >
               지금 시작하기
-              <ChevronRightIcon width={20} height={20} className="block" />
+              <div className="size-5 shrink-0 overflow-hidden">
+                <ChevronRightIcon className="block size-full" />
+              </div>
             </Link>
             <button
               onClick={() =>
@@ -134,7 +136,9 @@ export default function HeroSection() {
         style={{ opacity: bottomOpacity, y: bottomY }}
         className="relative z-10 mt-[4vh] flex w-140 items-center gap-2 rounded-[14px] bg-(--color-surface-default) px-4 py-2 shadow-[0_2px_16px_0_rgba(0,0,0,0.06)]"
       >
-        <SearchIcon width={24} height={24} className="text-(--color-text-tertiary)" />
+        <div className="size-6 shrink-0 overflow-hidden">
+          <SearchIcon className="block size-full text-(--color-text-tertiary)" />
+        </div>
         <span className="text-body text-(--color-text-tertiary)">
           모임 이름, 스킬, 장소로 검색
         </span>

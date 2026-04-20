@@ -68,7 +68,9 @@ export default function HowItWorksSection() {
             >
               {/* 아이콘 */}
               <div className="flex size-14 items-center justify-center rounded-2xl bg-(--color-surface-default)">
-                <step.Icon width={22} height={22} />
+                <div className="size-5.5 overflow-hidden">
+                  <step.Icon className="block size-full" />
+                </div>
               </div>
 
               {/* STEP 라벨 */}
