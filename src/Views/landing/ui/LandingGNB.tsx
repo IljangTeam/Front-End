@@ -38,7 +38,7 @@ const NavLabel = styled.span<{ $active: boolean }>`
     $active ? "var(--color-text-primary)" : "var(--color-text-secondary)"};
   transform: ${({ $active }) => ($active ? "translateY(-4px)" : "none")};
 
-  &:hover {
+  button:hover & {
     background-image: ${GRADIENT_ACCENT};
     -webkit-background-clip: text;
     background-clip: text;
